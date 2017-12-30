@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.assist.dao.AssistDao">
+    
+	<sql id="assistColumns">
+		a.id AS "id",
+		a.applyDate AS "applyDate",
+		a.applyName AS "applyName",
+		a.applyReason AS "applyReason",
+		a.assistState AS "assistState",
+		a.proc_ins_id, 
+		a.staticFlag AS "staticFlag",
+		a.version AS "version",
+		a.userinfo_id AS "userinfoId",
+		a.create_by AS "createBy.id",
+		a.create_date,
+		a.update_by AS "updateBy.id",
+		a.update_date
+	</sql>
+	
+	<sql id="assistJoins">
+	</sql>
+	
+	<select id="get" resultType="Assist">
+		SELECT 
+			<include refid="assistColumns"/>
+		FROM assist a
+		<include refid="assistJoins"/>
+		WHERE a.id = #{id}
+	</select>
+    
+	<select id="getByUserInfoId" resultType="Assist">
+		SELECT 
+			<include refid="assistColumns"/>
+		FROM assist a
+		<include refid="assistJoins"/>
+		WHERE a.userinfo_id = #{userInfoId}
+		
+		ORDER BY create_date desc
+		
+	</select>
+	
+	<select id="findList" resultType="Assist">
+		SELECT 
+			<include refid="assistColumns"/>
+		FROM assist a
+		<include refid="assistJoins"/>
+		<where>
+			
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="applyDate != null and applyDate != ''">
+				AND a.applyDate = #{applyDate}
+			</if>
+			<if test="applyName != null and applyName != ''">
+				AND a.applyName LIKE 
+					<if test="dbName == 'oracle'">'%'||#{applyName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{applyName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{applyName},'%')</if>
+			</if>
+			<if test="applyReason != null and applyReason != ''">
+				AND a.applyReason LIKE 
+					<if test="dbName == 'oracle'">'%'||#{applyReason}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{applyReason}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{applyReason},'%')</if>
+			</if>
+			<if test="assistState != null">
+				AND a.assistState = #{assistState}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllStateList" resultType="Assist">
+		SELECT 
+			<include refid="assistColumns"/>
+		FROM assist a
+		<include refid="assistJoins"/>
+		<where>
+			a.assistState > 0
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Assist">
+		SELECT 
+			<include refid="assistColumns"/>
+		FROM assist a
+		<include refid="assistJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO assist(
+			id,
+			applyDate,
+			applyName,
+			applyReason,
+			assistState,
+			staticFlag,
+			version,
+			create_by, 
+			create_date, 
+			update_by, 
+			update_date, 
+			userinfo_id
+		) VALUES (
+			#{id},
+			#{applyDate},
+			#{applyName},
+			#{applyReason},
+			#{assistState},
+			#{staticFlag},
+			#{version},
+			#{createBy.id}, 
+			#{createDate}, 
+			#{updateBy.id}, 
+			#{updateDate}, 
+			#{userinfoId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE assist SET 	
+			applyDate = #{applyDate},
+			applyName = #{applyName},
+			applyReason = #{applyReason},
+			assistState = #{assistState},
+			staticFlag = #{staticFlag},
+			version = #{version},
+			update_by = #{updateBy.id}, 
+			update_date = #{updateDate},
+			proc_ins_id = #{procInsId},
+			userinfo_id = #{userinfoId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM assist
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.userinfo.dao.UserinfoDao">
+    
+	<sql id="userinfoColumns">
+		a.id AS "id",
+		a.birth AS "birth",
+		a.community AS "community",
+		a.communityKey AS "communityKey",
+		a.degreeOfEducation AS "degreeOfEducation",
+		a.disability AS "disability",
+		a.famliyAddress AS "famliyAddress",
+		a.famliyNum AS "famliyNum",
+		a.farmersAndHerdsmen AS "farmersAndHerdsmen",
+		a.gender AS "gender",
+		a.healthy AS "healthy",
+		a.housingArea AS "housingArea",
+		a.housingKind AS "housingKind",
+		a.idCard AS "idCard",
+		a.identity AS "identity",
+		a.incomeSource AS "incomeSource",
+		a.incomeSourceKey AS "incomeSourceKey",
+		a.insurance AS "insurance",
+		a.insuranceKey AS "insuranceKey",
+		a.marriage AS "marriage",
+		a.medicalInsurance AS "medicalInsurance",
+		a.membershipTime AS "membershipTime",
+		a.modelWorker AS "modelWorker",
+		a.name AS "name",
+		a.nation AS "nation",
+		a.nationKey AS "nationKey",
+		a.organization AS "organization",
+		a.originalWorkAddress AS "originalWorkAddress",
+		a.partInJobTime AS "partInJobTime",
+		a.phoneNumber AS "phoneNumber",
+		a.politicalLandscape AS "politicalLandscape",
+		a.postCode AS "postCode",
+		a.problemKind AS "problemKind",
+		a.registerKind AS "registerKind",
+		a.registerPlace AS "registerPlace",
+		a.remarks AS "remarks",
+		a.salaryFamliy AS "salaryFamliy",
+		a.salaryPerson AS "salaryPerson",
+		a.serialNumber AS "serialNumber",
+		a.staticFlag AS "staticFlag",
+		a.subsistenceAllowances AS "subsistenceAllowances",
+		a.version AS "version",
+		a.create_by AS "createBy.id",
+		a.create_date,
+		a.update_by AS "updateBy.id",
+		a.update_date,
+		a.del_flag,
+		a.assist_id AS "assistId"
+	</sql>
+	
+	<sql id="userinfoJoins">
+	</sql>
+	
+	
+	
+	<select id="getByIdCard" resultType="Userinfo">
+		SELECT 
+			<include refid="userinfoColumns"/>
+		FROM userinfo a
+		<include refid="userinfoJoins"/>
+		WHERE a.idCard = #{idCard}
+	</select>
+    
+	<select id="get" resultType="Userinfo">
+		SELECT 
+			<include refid="userinfoColumns"/>
+		FROM userinfo a
+		<include refid="userinfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findListIdCards" resultType="String">
+		SELECT idCard FROM userinfo
+	</select>
+	
+	<select id="findList" resultType="Userinfo">
+		SELECT 
+			<include refid="userinfoColumns"/>
+		FROM userinfo a
+		<include refid="userinfoJoins"/>
+		<where>
+			
+			<if test="idCard != null and idCard != ''">
+				AND a.idCard = #{idCard}
+			</if>
+			<if test="community != null and community != ''">
+				AND a.community = #{community}
+			</if>
+			<if test="communityKey != null">
+				AND a.communityKey = #{communityKey}
+			</if>
+			<if test="degreeOfEducation != null and degreeOfEducation != ''">
+				AND a.degreeOfEducation = #{degreeOfEducation}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Userinfo">
+		SELECT 
+			<include refid="userinfoColumns"/>
+		FROM userinfo a
+		<include refid="userinfoJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO userinfo(
+			id,
+			birth,
+			community,
+			communityKey,
+			degreeOfEducation,
+			disability,
+			famliyAddress,
+			famliyNum,
+			farmersAndHerdsmen,
+			gender,
+			healthy,
+			housingArea,
+			housingKind,
+			idCard,
+			identity,
+			incomeSource,
+			incomeSourceKey,
+			insurance,
+			insuranceKey,
+			marriage,
+			medicalinSurance,
+			membershipTime,
+			modelWorker,
+			name,
+			nation,
+			nationKey,
+			organization,
+			originalWorkAddress,
+			partInJobTime,
+			phoneNumber,
+			politicalLandscape,
+			postCode,
+			problemKind,
+			registerKind,
+			registerPlace,
+			remarks,
+			salaryFamliy,
+			salaryPerson,
+			serialNumber,
+			staticFlag,
+			subsistenceAllowances,
+			version,
+			create_by, 
+			create_date, 
+			update_by, 
+			update_date, 
+			del_flag,
+			assist_id
+		) VALUES (
+			#{id},
+			#{birth},
+			#{community},
+			#{communityKey},
+			#{degreeOfEducation},
+			#{disability},
+			#{famliyAddress},
+			#{famliyNum},
+			#{farmersAndHerdsmen},
+			#{gender},
+			#{healthy},
+			#{housingArea},
+			#{housingKind},
+			#{idCard},
+			#{identity},
+			#{incomeSource},
+			#{incomeSourceKey},
+			#{insurance},
+			#{insuranceKey},
+			#{marriage},
+			#{medicalInsurance},
+			#{membershipTime},
+			#{modelWorker},
+			#{name},
+			#{nation},
+			#{nationKey},
+			#{organization},
+			#{originalWorkAddress},
+			#{partInJobTime},
+			#{phoneNumber},
+			#{politicalLandscape},
+			#{postCode},
+			#{problemKind},
+			#{registerKind},
+			#{registerPlace},
+			#{remarks},
+			#{salaryFamliy},
+			#{salaryPerson},
+			#{serialNumber},
+			#{staticFlag},
+			#{subsistenceAllowances},
+			#{version},
+			#{createBy.id}, 
+			#{createDate}, 
+			#{updateBy.id}, 
+			#{updateDate}, 
+			#{delFlag},
+			#{assistId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE userinfo SET 	
+			birth = #{birth},
+			community = #{community},
+			communityKey = #{communityKey},
+			degreeOfEducation = #{degreeOfEducation},
+			disability = #{disability},
+			famliyAddress = #{famliyAddress},
+			famliyNum = #{famliyNum},
+			farmersAndHerdsmen = #{farmersAndHerdsmen},
+			gender = #{gender},
+			healthy = #{healthy},
+			housingArea = #{housingArea},
+			housingKind = #{housingKind},
+			idCard = #{idCard},
+			identity = #{identity},
+			incomeSource = #{incomeSource},
+			incomeSourceKey = #{incomeSourceKey},
+			insurance = #{insurance},
+			insuranceKey = #{insuranceKey},
+			marriage = #{marriage},
+			medicalInsurance = #{medicalInsurance},
+			membershipTime = #{membershipTime},
+			modelWorker = #{modelWorker},
+			name = #{name},
+			nation = #{nation},
+			nationKey = #{nationKey},
+			organization = #{organization},
+			originalWorkAddress = #{originalWorkAddress},
+			partInJobTime = #{partInJobTime},
+			phoneNumber = #{phoneNumber},
+			politicalLandscape = #{politicalLandscape},
+			postCode = #{postCode},
+			problemKind = #{problemKind},
+			registerKind = #{registerKind},
+			registerPlace = #{registerPlace},
+			remarks = #{remarks},
+			salaryFamliy = #{salaryFamliy},
+			salaryPerson = #{salaryPerson},
+			serialNumber = #{serialNumber},
+			staticFlag = #{staticFlag},
+			subsistenceAllowances = #{subsistenceAllowances},
+			version = #{version},
+			update_by = #{updateBy.id}, 
+			update_date = #{updateDate}, 
+			assist_id = #{assistId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM userinfo
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

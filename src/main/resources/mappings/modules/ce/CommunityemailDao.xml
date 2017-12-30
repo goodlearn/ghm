@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.ce.dao.CommunityemailDao">
+    
+	<sql id="communityemailColumns">
+		a.id AS "id",
+		a.communityName AS "communityName",
+		a.email AS "email",
+		a.serial AS "serial",
+		a.staticFlag AS "staticFlag",
+		a.version AS "version"
+	</sql>
+	
+	<sql id="communityemailJoins">
+	</sql>
+    
+     <select id="getCommunityEmailByIdSerial" resultType="Communityemail">
+		SELECT 
+			<include refid="communityemailColumns"/>
+		FROM communityemail a
+		<include refid="communityemailJoins"/>
+		WHERE a.serial = #{serial}
+	</select>
+    
+	<select id="get" resultType="Communityemail">
+		SELECT 
+			<include refid="communityemailColumns"/>
+		FROM communityemail a
+		<include refid="communityemailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Communityemail">
+		SELECT 
+			<include refid="communityemailColumns"/>
+		FROM communityemail a
+		<include refid="communityemailJoins"/>
+		<where>
+			
+			<if test="communityName != null and communityname != ''">
+				AND a.communityName = #{communityName}
+			</if>
+			<if test="email != null and email != ''">
+				AND a.email = #{email}
+			</if>
+			<if test="serial != null">
+				AND a.serial = #{serial}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Communityemail">
+		SELECT 
+			<include refid="communityemailColumns"/>
+		FROM communityemail a
+		<include refid="communityemailJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO communityemail(
+			id,
+			communityName,
+			email,
+			serial,
+			staticFlag,
+			version
+		) VALUES (
+			#{id},
+			#{communityName},
+			#{email},
+			#{serial},
+			#{staticFlag},
+			#{version}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE communityemail SET 	
+			communityName = #{communityName},
+			email = #{email},
+			serial = #{serial},
+			staticFlag = #{staticFlag},
+			version = #{version}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM communityemail
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

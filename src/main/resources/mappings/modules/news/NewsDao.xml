@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.news.dao.NewsDao">
+    
+	<sql id="newsColumns">
+		a.id AS "id",
+		a.author AS "author",
+		a.constants AS "constants",
+		a.imagePath AS "imagePath",
+		a.newsDate AS "newsDate",
+		a.staticFlag AS "staticFlag",
+		a.title AS "title",
+		a.type AS "type",
+		a.version AS "version"
+	</sql>
+	
+	<sql id="newsJoins">
+	</sql>
+    
+	<select id="get" resultType="News">
+		SELECT 
+			<include refid="newsColumns"/>
+		FROM news a
+		<include refid="newsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="News">
+		SELECT 
+			<include refid="newsColumns"/>
+		FROM news a
+		<include refid="newsJoins"/>
+		<where>
+			
+			<if test="constants != null and constants != ''">
+				AND a.constants = #{constants}
+			</if>
+			<if test="newsDate != null and newsDate != ''">
+				AND a.newsDate = #{newsDate}
+			</if>
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="type != null">
+				AND a.type = #{type}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="News">
+		SELECT 
+			<include refid="newsColumns"/>
+		FROM news a
+		<include refid="newsJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO news(
+			id,
+			author,
+			constants,
+			imagePath,
+			newsDate,
+			staticFlag,
+			title,
+			type,
+			version
+		) VALUES (
+			#{id},
+			#{author},
+			#{constants},
+			#{imagePath},
+			#{newsDate},
+			#{staticFlag},
+			#{title},
+			#{type},
+			#{version}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE news SET 	
+			author = #{author},
+			constants = #{constants},
+			imagePath = #{imagePath},
+			newsDate = #{newsDate},
+			staticFlag = #{staticFlag},
+			title = #{title},
+			type = #{type},
+			version = #{version}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM news
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

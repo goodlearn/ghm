@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.resourceType.dao.ResourceTypeDao">
+    
+	<sql id="resourceTypeColumns">
+		a.id AS "id",
+		a.sourcePath AS "sourcePath",
+		a.staticFlag AS "staticFlag",
+		a.type AS "type",
+		a.version AS "version"
+	</sql>
+	
+	<sql id="resourceTypeJoins">
+	</sql>
+    
+	<select id="get" resultType="ResourceType">
+		SELECT 
+			<include refid="resourceTypeColumns"/>
+		FROM resourcetype a
+		<include refid="resourceTypeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ResourceType">
+		SELECT 
+			<include refid="resourceTypeColumns"/>
+		FROM resourcetype a
+		<include refid="resourceTypeJoins"/>
+		<where>
+			
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ResourceType">
+		SELECT 
+			<include refid="resourceTypeColumns"/>
+		FROM resourcetype a
+		<include refid="resourceTypeJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO resourcetype(
+			id,
+			sourcePath,
+			staticFlag,
+			type,
+			version
+		) VALUES (
+			#{id},
+			#{sourcePath},
+			#{staticFlag},
+			#{type},
+			#{version}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE resourcetype SET 	
+			sourcePath = #{sourcePath},
+			staticFlag = #{staticFlag},
+			type = #{type},
+			version = #{version}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM resourcetype
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

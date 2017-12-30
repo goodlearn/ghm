@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.famliyship.dao.FamliyrelationshipDao">
+    
+	<sql id="famliyrelationshipColumns">
+		a.id AS "id",
+		a.age AS "age",
+		a.birth AS "birth",
+		a.famliyAddress AS "famliyAddress",
+		a.famliyNum AS "famliyNum",
+		a.gender AS "gender",
+		a.healthy AS "healthy",
+		a.idCard AS "idCard",
+		a.insurance AS "insurance",
+		a.insurancekey AS "insuranceKey",
+		a.jobAddress AS "jobAddress",
+		a.name AS "name",
+		a.politicalLandscape AS "politicalLandscape",
+		a.politicallandscapekey AS "politicalLandscapeKey",
+		a.postCode AS "postCode",
+		a.relationship AS "relationship",
+		a.relationshipKey AS "relationshipKey",
+		a.salaryPerson AS "salaryPerson",
+		a.staticFlag AS "staticFlag",
+		a.version AS "version",
+		a.userinfo_id AS "userinfoId",
+		a.create_by AS "createBy.id",
+		a.create_date,
+		a.update_by AS "updateBy.id",
+		a.update_date
+	</sql>
+	
+	<sql id="famliyrelationshipJoins">
+	</sql>
+	
+	<select id="findByUserId" resultType="Famliyrelationship">
+		SELECT 
+			<include refid="famliyrelationshipColumns"/>
+		FROM famliyrelationship a
+		<include refid="famliyrelationshipJoins"/>
+		WHERE a.userinfo_id = #{userinfoId}
+	</select>
+    
+	<select id="get" resultType="Famliyrelationship">
+		SELECT 
+			<include refid="famliyrelationshipColumns"/>
+		FROM famliyrelationship a
+		<include refid="famliyrelationshipJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Famliyrelationship">
+		SELECT 
+			<include refid="famliyrelationshipColumns"/>
+		FROM famliyrelationship a
+		<include refid="famliyrelationshipJoins"/>
+		<where>
+			
+			<if test="age != null and age != ''">
+				AND a.age = #{age}
+			</if>
+			<if test="userinfoId != null and userinfoId != ''">
+				AND a.userinfo_id = #{userinfoId}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Famliyrelationship">
+		SELECT 
+			<include refid="famliyrelationshipColumns"/>
+		FROM famliyrelationship a
+		<include refid="famliyrelationshipJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO famliyrelationship(
+			id,
+			age,
+			birth,
+			famliyAddress,
+			famliyNum,
+			gender,
+			healthyKey,
+			healthy,
+			idCard,
+			insurance,
+			insuranceKey,
+			jobAddress,
+			name,
+			politicalLandscape,
+			politicalLandscapeKey,
+			postCode,
+			relationship,
+			relationshipKey,
+			salaryPerson,
+			staticFlag,
+			version,
+			create_by, 
+			create_date, 
+			update_by, 
+			update_date, 
+			userinfo_id
+		) VALUES (
+			#{id},
+			#{age},
+			#{birth},
+			#{famliyAddress},
+			#{famliyNum},
+			#{gender},
+			#{healthyKey},
+			#{healthy},
+			#{idCard},
+			#{insurance},
+			#{insuranceKey},
+			#{jobAddress},
+			#{name},
+			#{politicalLandscape},
+			#{politicalLandscapeKey},
+			#{postCode},
+			#{relationship},
+			#{relationshipKey},
+			#{salaryPerson},
+			#{staticFlag},
+			#{version},
+		    #{createBy.id}, 
+			#{createDate}, 
+			#{updateBy.id}, 
+			#{updateDate}, 
+			#{userinfoId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE famliyrelationship SET 	
+			age = #{age},
+			birth = #{birth},
+			famliyAddress = #{famliyAddress},
+			famliyNum = #{famliyNum},
+			gender = #{gender},
+			healthyKey = #{healthyKey},
+			healthy = #{healthy},
+			idCard = #{idCard},
+			insurance = #{insurance},
+			insuranceKey = #{insuranceKey},
+			jobAddress = #{jobAddress},
+			name = #{name},
+			politicalLandscape = #{politicalLandscape},
+			politicalLandscapeKey = #{politicalLandscapeKey},
+			postCode = #{postCode},
+			relationship = #{relationship},
+			relationshipKey = #{relationshipKey},
+			salaryPerson = #{salaryPerson},
+			staticFlag = #{staticFlag},
+			version = #{version},
+			update_by = #{updateBy.id}, 
+			update_date = #{updateDate}, 
+			userinfo_id = #{userinfoId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM famliyrelationship
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
