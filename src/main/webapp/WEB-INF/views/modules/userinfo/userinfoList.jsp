@@ -30,7 +30,7 @@
 	</div>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/userinfo/userinfo/">会员信息列表</a></li>
-		<shiro:hasPermission name="userinfo:userinfo:edit"><li><a href="${ctx}/userinfo/userinfo/form">会员信息添加</a></li></shiro:hasPermission>
+		<shiro:hasPermission name="userinfo:userinfo:edit"><li><a href="${ctx}/userinfo/userinfo/form">新增会员</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="userinfo" action="${ctx}/userinfo/userinfo/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -53,8 +53,9 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>身份证号</th>
 				<th>姓名</th>
+				<th>身份证号</th>
+				<th>性别</th>
 				<th>电话号</th>
 				<th>社区</th>
 				<shiro:hasPermission name="userinfo:userinfo:edit"><th>操作</th></shiro:hasPermission>
@@ -64,10 +65,13 @@
 		<c:forEach items="${page.list}" var="userinfo">
 			<tr>
 				<td><a href="${ctx}/userinfo/userinfo/form?id=${userinfo.id}">
-					${userinfo.idCard}
-				</a></td>
+					${userinfo.name}</a>
+				</td>
 				<td>
-					${userinfo.name}
+					${userinfo.idCard}
+				</td>
+				<td>
+					${fns:getDictLabel(userinfo.gender,'gender','')}
 				</td>
 				<td>
 					${userinfo.phoneNumber}
