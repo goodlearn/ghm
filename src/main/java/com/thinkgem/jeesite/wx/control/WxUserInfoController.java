@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.thinkgem.jeesite.common.encrypt.HttpClientUtil;
 import com.thinkgem.jeesite.common.utils.CasUtils;
 import com.thinkgem.jeesite.common.utils.CommonConstants;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.JsonUtil;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -534,7 +535,7 @@ public class WxUserInfoController extends BaseController {
 				ViewAssist viewAssist = new ViewAssist();
 				viewAssist.setApplyName(viewUserInfo.getName());
 				viewAssist.setApplyReason(numberString);
-				viewAssist.setApplyDate(CasUtils.convertDate2HMSString(new Date()));
+				viewAssist.setApplyDate(new Date());
 				viewAssist.setIdCard(idCard);
 				viewAssist.setAssistStateValue(AssistStateValue.apply);
 				viewAssist.setStaticFlag(true);

@@ -1,11 +1,13 @@
 package com.thinkgem.jeesite.modules.views;
 
+import java.util.Date;
+
 import com.thinkgem.jeesite.modules.assist.entity.Assist;
 import com.thinkgem.jeesite.modules.userinfo.entity.Userinfo;
 
 public class ViewAssist {
 
-	private String applydate;		// applydate
+	private Date applydate;		// applydate
 	private String applyname;		// applyname
 	private String applyreason;		// applyreason
 	private String assiststate;		// assiststate
@@ -35,14 +37,16 @@ public class ViewAssist {
 		this.userInfo = userInfo;
 	}
 
-
-
-	public String getApplydate() {
+	
+	public Date getApplydate() {
 		return applydate;
 	}
-	public void setApplydate(String applydate) {
+
+
+	public void setApplydate(Date applydate) {
 		this.applydate = applydate;
 	}
+
 	public String getApplyname() {
 		return applyname;
 	}

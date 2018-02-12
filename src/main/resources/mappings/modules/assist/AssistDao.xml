@@ -8,7 +8,6 @@
 		a.applyName AS "applyName",
 		a.applyReason AS "applyReason",
 		a.assistState AS "assistState",
-		a.proc_ins_id, 
 		a.staticFlag AS "staticFlag",
 		a.version AS "version",
 		a.userinfo_id AS "userinfoId",
@@ -67,6 +66,9 @@
 			</if>
 			<if test="assistState != null">
 				AND a.assistState = #{assistState}
+			</if>
+				<if test="beginApplydate != null and endApplydate != null and beginApplydate != '' and endApplydate != ''">
+				AND a.applyDate BETWEEN #{beginApplydate} AND #{endApplydate}
 			</if>
 		</where>
 		<choose>
@@ -152,7 +154,6 @@
 			version = #{version},
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate},
-			proc_ins_id = #{procInsId},
 			userinfo_id = #{userinfoId}
 		WHERE id = #{id}
 	</update>

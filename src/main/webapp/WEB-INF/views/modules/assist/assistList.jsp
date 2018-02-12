@@ -34,6 +34,14 @@
 					<form:options items="${fns:getDictList('assistState')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
+			<li><label>申请时间：</label>
+				<input name="beginApplydate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					value="<fmt:formatDate value="${assist.beginApplydate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/> - 
+				<input name="endApplydate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					value="<fmt:formatDate value="${assist.endApplydate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -61,7 +69,7 @@
 					${fns:getDictLabel(assist.assistState, 'assistState', '')}
 				</td>
 				<td>
-					${assist.applyDate}
+					<fmt:formatDate value="${assist.applyDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
 					${fns:getDictLabel(assist.userInfo.communityKey,'ce_serial','')}

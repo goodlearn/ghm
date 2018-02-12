@@ -28,7 +28,7 @@ public class ViewAssist{
 	private String applyReason;
 	
 	/**申请时间**/
-	private String applyDate;	
+	private Date applyDate;	
 	
 	/**
 	 * 所属会员
@@ -55,6 +55,9 @@ public class ViewAssist{
 	 */
 	private Integer code;
 	
+	private Date beginApplydate;
+	private Date endApplydate;
+	
 	/**
 	 * 数据转换
 	 * @param userInfo
@@ -67,6 +70,8 @@ public class ViewAssist{
 		assist.setApplyReason(applyReason);
 		assist.setApplyDate(applyDate);
 		assist.setAssistState(assistStateValue);
+		assist.setBeginApplydate(beginApplydate);
+		assist.setEndApplydate(endApplydate);
 		assist.setUserinfoId(Long.valueOf(userInfo.getId()));
 		assist.setUserInfo(userInfo);
 		return assist;
@@ -81,6 +86,22 @@ public class ViewAssist{
 		applyReason = assist.getApplyReason();
 		applyDate = assist.getApplyDate();
 		assistStateValue = assist.getAssistState();
+	}
+	
+	public Date getBeginApplydate() {
+		return beginApplydate;
+	}
+
+	public void setBeginApplydate(Date beginApplydate) {
+		this.beginApplydate = beginApplydate;
+	}
+
+	public Date getEndApplydate() {
+		return endApplydate;
+	}
+
+	public void setEndApplydate(Date endApplydate) {
+		this.endApplydate = endApplydate;
 	}
 
 	public String getApplyName() {
@@ -107,11 +128,11 @@ public class ViewAssist{
 		this.applyReason = applyReason;
 	}
 
-	public String getApplyDate() {
+	public Date getApplyDate() {
 		return applyDate;
 	}
 
-	public void setApplyDate(String applyDate) {
+	public void setApplyDate(Date applyDate) {
 		this.applyDate = applyDate;
 	}
 

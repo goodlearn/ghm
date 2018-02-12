@@ -3,8 +3,11 @@
  */
 package com.thinkgem.jeesite.modules.assist.entity;
 
+import java.util.Date;
+
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.modules.userinfo.entity.Userinfo;
 
@@ -23,7 +26,7 @@ public class Assist extends DataEntity<Assist>{
 	private String applyReason;
 	
 	/**申请时间**/
-	private String applyDate;	
+	private Date applyDate;	
 	
 	/**帮扶状态**/
 	private Integer assistState = 0;
@@ -31,6 +34,8 @@ public class Assist extends DataEntity<Assist>{
 	private Integer version;		// version
 	private Long userinfoId;		// userinfo_id
 	private Userinfo userInfo;//帮扶对象
+	private Date beginApplydate;
+	private Date endApplydate;
 	
 	public Assist() {
 		super();
@@ -40,15 +45,16 @@ public class Assist extends DataEntity<Assist>{
 		super(id);
 	}
 
-	@Length(min=0, max=255, message="applydate长度必须介于 0 和 255 之间")
-	public String getApplyDate() {
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	public Date getApplyDate() {
 		return applyDate;
 	}
 
-	public void setApplyDate(String applydate) {
-		this.applyDate = applydate;
+	public void setApplyDate(Date applyDate) {
+		this.applyDate = applyDate;
 	}
-	
+
 	@Length(min=0, max=255, message="applyname长度必须介于 0 和 255 之间")
 	public String getApplyName() {
 		return applyName;
@@ -109,4 +115,21 @@ public class Assist extends DataEntity<Assist>{
 		this.userInfo = userInfo;
 	}
 
+	public Date getBeginApplydate() {
+		return beginApplydate;
+	}
+
+	public void setBeginApplydate(Date beginApplydate) {
+		this.beginApplydate = beginApplydate;
+	}
+
+	public Date getEndApplydate() {
+		return endApplydate;
+	}
+
+	public void setEndApplydate(Date endApplydate) {
+		this.endApplydate = endApplydate;
+	}
+
+	
 }
