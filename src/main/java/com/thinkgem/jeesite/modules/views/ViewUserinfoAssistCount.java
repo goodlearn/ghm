@@ -1,12 +1,12 @@
 package com.thinkgem.jeesite.modules.views;
 
 /**
- * 用户性别 统计视图
+ * 困难职工 统计视图
  *
  */
-public class ViewUserinfoGenderCount {
+public class ViewUserinfoAssistCount {
 
-	private String type;//性别
+	private String type;
 	
 	private Integer num;//数量
 

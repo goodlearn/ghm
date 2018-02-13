@@ -1,6 +1,3 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.assist.service;
 
 import java.io.BufferedInputStream;
@@ -566,5 +563,15 @@ public class AssistService extends AssistBaseService {
         params.put("${RelationHealthy"+data.toString(),""); 
         params.put("${RelationSchool"+data.toString(),"");
 	     
+	}
+	
+	//查询数量
+	public Integer findCount() {
+		return dao.findCount();
+	}
+	
+	//查询去重复会员
+	public Integer findDistinctCount() {
+		return dao.findDistinctCount();
 	}
 }

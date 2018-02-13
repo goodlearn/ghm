@@ -68,6 +68,18 @@
 		<include refid="assistJoins"/>
 		WHERE a.id = #{id}
 	</select>
+	
+	<select id="findCount" resultType="Integer">
+		SELECT 
+			count(id)
+		FROM assist
+	</select>
+	
+	<select id="findDistinctCount" resultType="Integer">
+		SELECT 
+			COUNT(DISTINCT userinfo_id)
+		FROM assist
+	</select>
     
 	<select id="getByUserInfoId" resultType="Assist">
 		SELECT 

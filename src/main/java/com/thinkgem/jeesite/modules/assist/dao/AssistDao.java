@@ -1,6 +1,3 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.assist.dao;
 
 import java.util.List;
@@ -22,6 +19,9 @@ public interface AssistDao extends CrudDao<Assist> {
 	
 	public List<Assist> findAllStateList(Assist entity);
 	
+	//查询数量
+	public Integer findCount();
 	
-	
+	//去除重复会员
+	public Integer findDistinctCount();
 }

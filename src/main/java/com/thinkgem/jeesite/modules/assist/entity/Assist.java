@@ -1,6 +1,3 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.assist.entity;
 
 import java.util.Date;
@@ -36,10 +33,24 @@ public class Assist extends DataEntity<Assist>{
 	private Userinfo userInfo;//帮扶对象
 	private Date beginApplydate;
 	private Date endApplydate;
+	private String noSlashShow;//无帮扶附件
 	
 	public Assist() {
 		super();
 	}
+	
+
+	public String getNoSlashShow() {
+		return noSlashShow;
+	}
+
+
+
+	public void setNoSlashShow(String noSlashShow) {
+		this.noSlashShow = noSlashShow;
+	}
+
+
 
 	public Assist(String id){
 		super(id);

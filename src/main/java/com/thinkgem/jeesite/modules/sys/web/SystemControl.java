@@ -21,7 +21,7 @@ import com.thinkgem.jeesite.modules.assist.entity.Assist;
 import com.thinkgem.jeesite.modules.assist.service.AssistService;
 import com.thinkgem.jeesite.modules.userinfo.entity.Userinfo;
 import com.thinkgem.jeesite.modules.userinfo.service.UserinfoService;
-import com.thinkgem.jeesite.modules.views.ViewUserinfoGenderCount;
+import com.thinkgem.jeesite.modules.views.ViewUserinfoAssistCount;
 
 /**
  * 控系统处理
@@ -40,8 +40,30 @@ public class SystemControl extends BaseController {
 	private String yyyymmdd = "yyyy-MMM-dd";
 	private String EEEMMMDDD = "EEE MMM dd HH:mm:ss z yyyy";
 	
-	private final String MSG_GENDER_COUNT = "success";
-	private final String successCode = "0";//成功码
+	@RequestMapping(value = "findAucp")
+	public String findAucp() {
+		return "modules/assist/assistUserinfo";
+	}
+	
+	@RequestMapping(value = "findAuc")
+	@ResponseBody
+	public String findAuc() {
+		List<ViewUserinfoAssistCount> list = new ArrayList<ViewUserinfoAssistCount>();
+		ViewUserinfoAssistCount vugc1 = new ViewUserinfoAssistCount();
+		vugc1.setType("总帮扶数量");
+		vugc1.setNum(assistService.findCount());
+		ViewUserinfoAssistCount vugc2 = new ViewUserinfoAssistCount();
+		vugc2.setType("困难职工数量");
+		vugc2.setNum(assistService.findDistinctCount());
+		ViewUserinfoAssistCount vugc3 = new ViewUserinfoAssistCount();
+		vugc3.setType("总会员数量");
+		vugc3.setNum(userinfoService.findCount());
+		list.add(vugc1);
+		list.add(vugc2);
+		list.add(vugc3);
+		String jsonResult = JSONObject.toJSONString(list);//将map对象转换成json类型数据
+		return jsonResult;
+	}
 	
 	@RequestMapping(value = "findGenderCountPage")
 	public String findGenderCountPage() {
@@ -60,22 +82,6 @@ public class SystemControl extends BaseController {
 		logger.info("男人数:"+userinfoService.findGenderCount(userinfo));
 		userinfo.setGender(Boolean.FALSE);
 		logger.info("女人数:"+userinfoService.findGenderCount(userinfo));
-		List<ViewUserinfoGenderCount> list = new ArrayList<ViewUserinfoGenderCount>();
-		ViewUserinfoGenderCount vugc1 = new ViewUserinfoGenderCount();
-		vugc1.setType("totalP");
-		vugc1.setNum(userinfoService.findGenderCount(userinfo));
-		ViewUserinfoGenderCount vugc2 = new ViewUserinfoGenderCount();
-		userinfo.setGender(Boolean.TRUE);
-		vugc2.setType("manP");
-		vugc2.setNum(userinfoService.findGenderCount(userinfo));
-		ViewUserinfoGenderCount vugc3 = new ViewUserinfoGenderCount();
-		userinfo.setGender(Boolean.FALSE);
-		vugc3.setType("womanP");
-		vugc3.setNum(userinfoService.findGenderCount(userinfo));
-		list.add(vugc1);
-		list.add(vugc2);
-		list.add(vugc3);
-		String jsonResult = JSONObject.toJSONString(list);//将map对象转换成json类型数据
 		Map<String,Integer> map = new HashMap<String,Integer>();
 		map.put("totalP", userinfoService.findCount());
 		userinfo.setGender(Boolean.TRUE);
@@ -84,7 +90,7 @@ public class SystemControl extends BaseController {
 		map.put("womanP", userinfoService.findGenderCount(userinfo));
 		userinfo.setGender(null);
 		map.put("undefinedP", userinfoService.findGenderCount(userinfo));
-		jsonResult = JSONObject.toJSONString(map);//将map对象转换成json类型数据
+		String jsonResult = JSONObject.toJSONString(map);//将map对象转换成json类型数据
 		return jsonResult;
 	}
 	/**

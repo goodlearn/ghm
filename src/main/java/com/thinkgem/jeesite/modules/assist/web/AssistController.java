@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -18,15 +19,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.alibaba.fastjson.JSONObject;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.utils.BasePathUtils;
 import com.thinkgem.jeesite.common.utils.CasUtils;
 import com.thinkgem.jeesite.common.utils.CommonConstants;
 import com.thinkgem.jeesite.common.utils.Encodes;
@@ -35,8 +39,11 @@ import com.thinkgem.jeesite.modules.assist.entity.Assist;
 import com.thinkgem.jeesite.modules.assist.service.AssistService;
 import com.thinkgem.jeesite.modules.famliyship.entity.Famliyrelationship;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.userinfo.entity.Userinfo;
+import com.thinkgem.jeesite.modules.userinfo.service.UserinfoService;
+import com.thinkgem.jeesite.modules.views.ViewUserinfoAssistCount;
 
 /**
  * assistController
@@ -49,6 +56,8 @@ public class AssistController extends BaseController {
 
 	@Autowired
 	private AssistService assistService;
+	@Autowired
+	private UserinfoService userinfoService;
 	
 	@ModelAttribute
 	public Assist get(@RequestParam(required=false) String id,@RequestParam(required=false) String userInfoIdCard) {
@@ -59,11 +68,6 @@ public class AssistController extends BaseController {
 		if (entity == null){
 			entity = new Assist();
 		}
-		
-		if (StringUtils.isNotBlank(userInfoIdCard)){
-			entity.setUserinfoId(Long.valueOf(userInfoIdCard));
-		}
-		
 		return entity;
 	}
 	
@@ -78,7 +82,6 @@ public class AssistController extends BaseController {
 	@RequiresPermissions("assist:assist:view")
 	@RequestMapping(value = "form")
 	public String form(Assist assist, Model model) {
-		assistService.setUserInfo(assist);
 		model.addAttribute("assist", assist);
 		return "modules/assist/assistForm";
 	}
@@ -377,5 +380,71 @@ public class AssistController extends BaseController {
 		addMessage(redirectAttributes, "删除帮扶状态成功");
 		return "redirect:"+Global.getAdminPath()+"/assist/assist/?repage";
 	}
+	
+	//获取帮扶会员数量图
+	@RequiresPermissions("assist:assist:view")
+	@RequestMapping(value = "findAucp")
+	public String findAucp() {
+		return "modules/assist/assistUserinfo";
+	}
 
+	@RequestMapping(value = "findAuc")
+	@ResponseBody
+	public String findAuc() {
+		List<ViewUserinfoAssistCount> list = new ArrayList<ViewUserinfoAssistCount>();
+		ViewUserinfoAssistCount vugc1 = new ViewUserinfoAssistCount();
+		vugc1.setType("总帮扶数量");
+		vugc1.setNum(assistService.findCount());
+		ViewUserinfoAssistCount vugc2 = new ViewUserinfoAssistCount();
+		vugc2.setType("困难职工数量");
+		vugc2.setNum(assistService.findDistinctCount());
+		ViewUserinfoAssistCount vugc3 = new ViewUserinfoAssistCount();
+		vugc3.setType("总会员数量");
+		vugc3.setNum(userinfoService.findCount());
+		list.add(vugc1);
+		list.add(vugc2);
+		list.add(vugc3);
+		String jsonResult = JSONObject.toJSONString(list);//将map对象转换成json类型数据
+		return jsonResult;
+	}
+	
+	/**
+	 * 预览附件
+	 * @param assist
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("assist:assist:view")
+	@RequestMapping(value = "preview")
+	public String preview(Assist assist, Model model,HttpServletRequest request, HttpServletResponse response) {
+	    String httpProtocol = DictUtils.getDictValue("httpProtocol", "systemControl", "http");
+	    String url = BasePathUtils.getBasePath(request);
+	    if("https".equals(httpProtocol)) {
+	    	url = url.replace("http", "https");
+	    }
+	    
+	    Long userinfoId = assist.getUserinfoId();
+	    Userinfo userinfo = userinfoService.get(userinfoId.toString());
+	    String idCard = userinfo.getIdCard();
+	    String dirParam = headPhotoPath(idCard);
+	    File dir = new File(dirParam);
+	    if(dir.isDirectory()) {
+	    	File[] listFiles = dir.listFiles();
+	    	List<String> urlList = null;
+	    	if(listFiles.length > 0) {
+	    		urlList = new ArrayList<String>();
+	    		for(File file : listFiles) {
+		    		String tempUrl = url +"images/" + idCard + "/" + file.getName();
+		    		urlList.add(tempUrl);
+		    	}
+	    		model.addAttribute("urlList",urlList);
+	    	}else {
+	    		assist.setNoSlashShow("无帮扶附件");
+	    	}
+	    }else {
+	    	assist.setNoSlashShow("无帮扶附件");
+	    }
+		model.addAttribute("assist", assist);
+		return "modules/assist/assistSlash";
+	}
 }

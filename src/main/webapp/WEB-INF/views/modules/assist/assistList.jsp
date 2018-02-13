@@ -84,6 +84,7 @@
 							<a href="${ctx}/assist/assist/delete?id=${assist.id}" onclick="return confirmx('确认要删除该帮扶状态吗？', this.href)">删除</a>
 						</shiro:hasPermission>
 						<shiro:hasPermission name="assist:assist:view">
+							<a href="${ctx}/assist/assist/preview?id=${assist.id}">预览附件</a>
  							<a href="${ctx}/assist/assist/sendMail?id=${assist.id}">发送至邮箱</a>
  						</shiro:hasPermission>
 					</td>
