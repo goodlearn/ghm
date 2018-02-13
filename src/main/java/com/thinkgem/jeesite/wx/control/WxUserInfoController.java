@@ -22,7 +22,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.thinkgem.jeesite.common.encrypt.HttpClientUtil;
 import com.thinkgem.jeesite.common.utils.CasUtils;
 import com.thinkgem.jeesite.common.utils.CommonConstants;
-import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.JsonUtil;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;

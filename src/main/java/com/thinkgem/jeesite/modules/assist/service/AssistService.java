@@ -63,7 +63,7 @@ public class AssistService extends AssistBaseService {
 	
 	public List<Assist> findList(Assist assist) {
 		List<Assist> assists =  super.findList(assist);
-		setUserInfoForAssist(assists);//补充会员信息
+		//setUserInfoForAssist(assists);//补充会员信息
 		return assists;
 	}
 	
@@ -71,8 +71,8 @@ public class AssistService extends AssistBaseService {
 		page.setOrderBy("applyDate desc");
 		Page<Assist> assists =  super.findPage(page, assist);
 		/*List<Assist> queryAssistStates = findAssistByRoleType(assists.getList());
-		assists.setList(queryAssistStates);*/
-		setUserInfoForAssist(assists.getList());//补充会员信息
+		assists.setList(queryAssistStates);
+		setUserInfoForAssist(assists.getList());//补充会员信息*/
 		return assists ;
 	}
 	

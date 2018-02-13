@@ -1,9 +1,5 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.userinfo.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.common.utils.CasUtils;
 import com.thinkgem.jeesite.modules.userinfo.entity.Userinfo;
 import com.thinkgem.jeesite.modules.assist.dao.AssistDao;
 import com.thinkgem.jeesite.modules.assist.entity.Assist;
 import com.thinkgem.jeesite.modules.famliyship.dao.FamliyrelationshipDao;
 import com.thinkgem.jeesite.modules.famliyship.entity.Famliyrelationship;
-import com.thinkgem.jeesite.modules.famliyship.service.FamliyrelationshipService;
-import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
-import com.thinkgem.jeesite.modules.userinfo.dao.UserinfoDao;
 
 /**
  * userInfoService
@@ -131,4 +122,16 @@ public class UserinfoService extends BaseUserinfoService {
 		super.delete(userinfo);
 	}
 	
+	/**
+	 * 查询会员数量，依据性别
+	 */
+	public Integer findGenderCount(Userinfo userInfo) {
+		return dao.findGenderCount(userInfo);
+	}
+	
+	/**，依据性别
+	 */
+	public Integer findCount() {
+		return dao.findCount();
+	}
 }

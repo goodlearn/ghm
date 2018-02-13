@@ -1,6 +1,3 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.userinfo.dao;
 
 import java.util.List;
@@ -21,5 +18,7 @@ public interface UserinfoDao extends CrudDao<Userinfo> {
 	
 	public Userinfo getByIdCard(String idcard);
 	
+	public Integer findGenderCount(Userinfo userinfo);
 	
+	public Integer findCount();
 }

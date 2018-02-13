@@ -1,8 +1,6 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.userinfo.web;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
@@ -247,6 +246,38 @@ public class UserinfoController extends BaseController {
 			mapList.add(map);
 		}
 		return mapList;
+	}
+	
+	/**
+	 * 查询性别人数
+	 * @param userinfo
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("userinfo:userinfo:view")
+	@RequestMapping(value = "findGenderCountPage")
+	public String findGenderCountPage() {
+		return "modules/userinfo/userinfoGender";
+	}
+	
+
+	/**
+	 * 依据性别查询会员数
+	 */
+	@RequestMapping(value = "findGenderCount")
+	@ResponseBody
+	public String findGenderCount() {
+		Userinfo userinfo = new Userinfo();
+		Map<String,Integer> map = new HashMap<String,Integer>();
+		map.put("totalP", userinfoService.findCount());
+		userinfo.setGender(Boolean.TRUE);
+		map.put("manP", userinfoService.findGenderCount(userinfo));
+		userinfo.setGender(Boolean.FALSE);
+		map.put("womanP", userinfoService.findGenderCount(userinfo));
+		userinfo.setGender(null);
+		map.put("undefinedP", userinfoService.findGenderCount(userinfo));
+		String jsonResult = JSONObject.toJSONString(map);//将map对象转换成json类型数据
+		return jsonResult;
 	}
 
 }

@@ -56,7 +56,30 @@
 	<sql id="userinfoJoins">
 	</sql>
 	
+	<!-- 查询数量 -->
+	<select id="findCount" resultType="Integer">
+		SELECT 
+			count(id)
+		FROM userinfo a
+		<include refid="userinfoJoins"/>
+	</select>
 	
+	
+	<!-- 根据性别查询数量 -->
+	<select id="findGenderCount" resultType="Integer">
+		SELECT 
+			count(id)
+		FROM userinfo a
+		<include refid="userinfoJoins"/>
+		<where>
+			<if test="gender != null">
+				a.gender = #{gender}
+			</if>
+			<if test="gender == null">
+				a.gender is null
+			</if>
+		</where>
+	</select>
 	
 	<select id="getByIdCard" resultType="Userinfo">
 		SELECT 

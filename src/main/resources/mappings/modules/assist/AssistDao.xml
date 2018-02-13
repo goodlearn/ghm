@@ -14,10 +14,51 @@
 		a.create_by AS "createBy.id",
 		a.create_date,
 		a.update_by AS "updateBy.id",
-		a.update_date
+		a.update_date,
+		u.id AS "userInfo.id",
+		u.birth AS "userInfo.birth",
+		u.community AS "userInfo.community",
+		u.communityKey AS "userInfo.communityKey",
+		u.degreeOfEducation AS "userInfo.degreeOfEducation",
+		u.disability AS "userInfo.disability",
+		u.famliyAddress AS "userInfo.famliyAddress",
+		u.famliyNum AS "userInfo.famliyNum",
+		u.farmersAndHerdsmen AS "userInfo.farmersAndHerdsmen",
+		u.gender AS "userInfo.gender",
+		u.healthy AS "userInfo.healthy",
+		u.housingArea AS "userInfo.housingArea",
+		u.housingKind AS "userInfo.housingKind",
+		u.idCard AS "userInfo.idCard",
+		u.identity AS "userInfo.identity",
+		u.incomeSource AS "userInfo.incomeSource",
+		u.incomeSourceKey AS "userInfo.incomeSourceKey",
+		u.insurance AS "userInfo.insurance",
+		u.insuranceKey AS "userInfo.insuranceKey",
+		u.marriage AS "userInfo.marriage",
+		u.medicalInsurance AS "userInfo.medicalInsurance",
+		u.membershipTime AS "userInfo.membershipTime",
+		u.modelWorker AS "userInfo.modelWorker",
+		u.name AS "userInfo.name",
+		u.nation AS "userInfo.nation",
+		u.nationKey AS "userInfo.nationKey",
+		u.organization AS "userInfo.organization",
+		u.originalWorkAddress AS "userInfo.originalWorkAddress",
+		u.partInJobTime AS "userInfo.partInJobTime",
+		u.phoneNumber AS "userInfo.phoneNumber",
+		u.politicalLandscape AS "userInfo.politicalLandscape",
+		u.postCode AS "userInfo.postCode",
+		u.problemKind AS "userInfo.problemKind",
+		u.registerKind AS "userInfo.registerKind",
+		u.registerPlace AS "userInfo.registerPlace",
+		u.remarks AS "userInfo.remarks",
+		u.salaryFamliy AS "userInfo.salaryFamliy",
+		u.salaryPerson AS "userInfo.salaryPerson",
+		u.serialNumber AS "userInfo.serialNumber",
+		u.subsistenceAllowances AS "userInfo.subsistenceAllowances"
 	</sql>
 	
 	<sql id="assistJoins">
+			LEFT JOIN userinfo u ON u.id = a.userinfo_id
 	</sql>
 	
 	<select id="get" resultType="Assist">
