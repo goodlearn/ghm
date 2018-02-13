@@ -105,7 +105,7 @@ public class EmailHelper {
 			props.setProperty("mail.smtp.port", "465");
 			props.setProperty("mail.smtp.socketFactory.port", "465");
 	        props.put("mail.smtp.host", host);
-	        props.put("mail.smtp.starttls.enable", "true");
+	        props.put("mail.smtp.starttls.enable", "false");
 	        
 	        final String username1 = username;
 	        final String password1 = password;
@@ -179,7 +179,7 @@ public class EmailHelper {
 			props.setProperty("mail.smtp.port", "465");
 			props.setProperty("mail.smtp.socketFactory.port", "465");
 	        props.put("mail.smtp.host", host);
-	        props.put("mail.smtp.starttls.enable", "true");
+	        props.put("mail.smtp.starttls.enable", "false");
 	        
 	        final String username1 = username;
 	        final String password1 = password;
