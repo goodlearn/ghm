@@ -45,7 +45,7 @@
 							 <c:forEach items="${urlList}"  var="item" varStatus="status"> 
 								 <tr>
 								 	<td>
-								 		<a href = "${item}">附件${status.count}</a>
+								 		<a href = "${item}" target="_blank">附件${status.count}</a>
 								 	</td>
 								 </tr>
 							 </c:forEach> 
