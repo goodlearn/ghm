@@ -33,6 +33,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.modules.famliyship.entity.Famliyrelationship;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.userinfo.entity.Userinfo;
 import com.thinkgem.jeesite.modules.userinfo.service.UserinfoService;
 
@@ -63,6 +65,11 @@ public class UserinfoController extends BaseController {
 	@RequiresPermissions("userinfo:userinfo:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Userinfo userinfo, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		String communityKey = user.getCommunityKey();
+		if(StringUtils.isNotEmpty(communityKey)) {
+			userinfo.setCommunityKey(Integer.valueOf(communityKey));
+		}
 		Page<Userinfo> page = userinfoService.findPage(new Page<Userinfo>(request, response), userinfo); 
 		model.addAttribute("page", page);
 		return "modules/userinfo/userinfoList";

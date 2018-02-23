@@ -73,7 +73,9 @@
 		a.create_date,
 		a.update_by AS "updateBy.id",
 		a.update_date,
-		a.del_flag
+		a.del_flag,
+		community,
+		communityKey
     </sql>
     
     <sql id="userJoins">
@@ -126,6 +128,9 @@
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="communityKey != null and communityKey != ''">
+			AND a.communityKey = #{communityKey}
 		</if>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -181,7 +186,9 @@
 			update_date, 
 			remarks, 
 			login_flag, 
-			del_flag
+			del_flag,
+			community,
+			communityKey
 		) VALUES (
 			#{id}, 
 			#{loginName}, 
@@ -197,7 +204,9 @@
 			#{updateDate}, 
 			#{remarks}, 
 			#{loginFlag}, 
-			#{delFlag}
+			#{delFlag},
+			#{community},
+			#{communityKey}
 		)
 	</insert>
 	
@@ -214,7 +223,9 @@
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
-			login_flag = #{loginFlag}
+			login_flag = #{loginFlag},
+			community = #{community},
+			communityKey = #{communityKey}
 		WHERE id = #{id}
 	</update>
 	
@@ -243,6 +254,8 @@
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
+			community = #{community},
+			communityKey = #{communityKey}
 		WHERE id = #{id}
 	</update>
 	

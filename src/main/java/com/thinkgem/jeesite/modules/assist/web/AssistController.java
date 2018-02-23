@@ -39,6 +39,7 @@ import com.thinkgem.jeesite.modules.assist.entity.Assist;
 import com.thinkgem.jeesite.modules.assist.service.AssistService;
 import com.thinkgem.jeesite.modules.famliyship.entity.Famliyrelationship;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.userinfo.entity.Userinfo;
@@ -74,6 +75,13 @@ public class AssistController extends BaseController {
 	@RequiresPermissions("assist:assist:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Assist assist, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		String communityKey = user.getCommunityKey();
+		if(StringUtils.isNotEmpty(communityKey)) {
+			Userinfo userinfo = new Userinfo();
+			userinfo.setCommunityKey(Integer.valueOf(communityKey));
+			assist.setUserInfo(userinfo);
+		}
 		Page<Assist> page = assistService.findPage(new Page<Assist>(request, response), assist); 
 		model.addAttribute("page", page);
 		return "modules/assist/assistList";

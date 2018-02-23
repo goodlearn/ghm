@@ -120,8 +120,11 @@
 			<if test="assistState != null">
 				AND a.assistState = #{assistState}
 			</if>
-				<if test="beginApplydate != null and endApplydate != null and beginApplydate != '' and endApplydate != ''">
+			<if test="beginApplydate != null and endApplydate != null and beginApplydate != '' and endApplydate != ''">
 				AND a.applyDate BETWEEN #{beginApplydate} AND #{endApplydate}
+			</if>
+			<if test="userInfo != null and userInfo.communityKey != null and userInfo.communityKey != ''">
+				AND u.communityKey =  #{userInfo.communityKey}
 			</if>
 		</where>
 		<choose>

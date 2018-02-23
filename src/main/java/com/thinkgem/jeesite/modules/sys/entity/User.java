@@ -1,6 +1,3 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.sys.entity;
 
 import java.util.Date;
@@ -38,6 +35,8 @@ public class User extends DataEntity<User> {
 	private String loginIp;	// 最后登陆IP
 	private Date loginDate;	// 最后登陆日期
 	private String loginFlag;	// 是否允许登陆
+	private String communityKey;
+	private String community;
 
 	private String oldLoginName;// 原登录名
 	private String newPassword;	// 新密码
@@ -61,6 +60,23 @@ public class User extends DataEntity<User> {
 	public User(String id, String loginName){
 		super(id);
 		this.loginName = loginName;
+	}
+	
+	
+	public String getCommunityKey() {
+		return communityKey;
+	}
+
+	public void setCommunityKey(String communityKey) {
+		this.communityKey = communityKey;
+	}
+
+	public String getCommunity() {
+		return community;
+	}
+
+	public void setCommunity(String community) {
+		this.community = community;
 	}
 
 	public User(Role role){

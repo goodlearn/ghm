@@ -14,6 +14,7 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,9 @@ import com.thinkgem.jeesite.modules.ce.dao.CommunityemailDao;
 import com.thinkgem.jeesite.modules.ce.entity.Communityemail;
 import com.thinkgem.jeesite.modules.famliyship.dao.FamliyrelationshipDao;
 import com.thinkgem.jeesite.modules.famliyship.entity.Famliyrelationship;
+import com.thinkgem.jeesite.modules.sys.dao.UserDao;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.userinfo.entity.Userinfo;
 
@@ -49,6 +52,9 @@ public class AssistService extends AssistBaseService {
 	//会员
 	@Autowired
 	protected CommunityemailDao communityemailDao;
+	
+	@Autowired
+	protected UserDao userDao;
 	
 	public Assist get(String id) {
 		return super.get(id);
@@ -347,21 +353,30 @@ public class AssistService extends AssistBaseService {
 		Userinfo userInfo = findUserinfo(assist);
 		String communityKey = userInfo.getCommunityKey().toString();
 		String toAddress = null;//邮箱地址
-		Communityemail ce = communityemailDao.getCommunityEmailByIdSerial(communityKey);
 		
-		if(null == ce){
-        	//没有对应的邮箱 默认0序号邮箱
+		User queryUser = new User();
+		queryUser.setCommunityKey(communityKey);
+		List<User> userList = userDao.findList(queryUser);
+		if(null == userList || userList.size() == 0) {
+			//没有对应的邮箱 默认0序号邮箱
 			Communityemail defaultVce = communityemailDao.getCommunityEmailByIdSerial(String.valueOf(0));
-        	 if(null!=defaultVce){
-        		 toAddress = defaultVce.getEmail();
-        	 }
-        }else{
-        	 toAddress = ce.getEmail();
-        }
+			if(null!=defaultVce){
+       		 	toAddress = defaultVce.getEmail();
+       	 	}
+		}else {
+			//默认用第一个 不为空的
+			for(User user : userList) {
+				String emailAddress = user.getEmail();
+				if(StringUtils.isNotEmpty(emailAddress)) {
+					toAddress = emailAddress;
+					break;
+				}
+			}
+		}
 		
-		if(null == toAddress){
-	        toAddress = CommonConstants.EMAIL_DEFAULT;//邮箱地址
-	    }
+		if(StringUtils.isEmpty(toAddress)) {
+			  toAddress = CommonConstants.EMAIL_DEFAULT;//邮箱地址
+		}
 		return toAddress;
 	        
 	}

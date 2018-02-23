@@ -69,7 +69,7 @@ public class NewsController extends BaseController {
 		}
 		newsService.save(news);
 		addMessage(redirectAttributes, "保存新闻信息成功");
-		return "redirect:"+Global.getAdminPath()+"/news/news/?repage";
+		return "redirect:"+Global.getAdminPath()+"/news/news/list";
 	}
 	
 	@RequiresPermissions("news:news:edit")
@@ -77,7 +77,7 @@ public class NewsController extends BaseController {
 	public String delete(News news, RedirectAttributes redirectAttributes) {
 		newsService.delete(news);
 		addMessage(redirectAttributes, "删除新闻信息成功");
-		return "redirect:"+Global.getAdminPath()+"/news/news/?repage";
+		return "redirect:"+Global.getAdminPath()+"/news/news/list";
 	}
 
 }
