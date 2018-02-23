@@ -128,7 +128,7 @@ public class UserController extends BaseController {
 		user.setRoleList(roleList);
 		String communityKey = user.getCommunityKey();
 		if(StringUtils.isNotEmpty(communityKey)) {
-			String community = DictUtils.getDictLabel("communityKey", "ce_serial", "");
+			String community = DictUtils.getDictLabel(communityKey, "ce_serial", "");
 			user.setCommunity(community);
 		}
 		// 保存用户信息
@@ -292,7 +292,7 @@ public class UserController extends BaseController {
 			currentUser.setRemarks(user.getRemarks());
 			String communityKey = user.getCommunityKey();
 			if(StringUtils.isNotEmpty(communityKey)) {
-				String community = DictUtils.getDictLabel("communityKey", "ce_serial", "");
+				String community = DictUtils.getDictLabel(communityKey, "ce_serial", "");
 				currentUser.setCommunity(community);
 			}
 			systemService.updateUserInfo(currentUser);
