@@ -80,7 +80,7 @@
 							<a href="${ctx}/assist/assist/formDetails?id=${assist.id}">查看</a>
  						</shiro:hasPermission>
 						<shiro:hasPermission name="assist:assist:edit">
-		    				<a href="${ctx}/assist/assist/form?id=${assist.id}">修改</a>
+		    				<a href="${ctx}/assist/assist/form?id=${assist.id}">修改帮扶状态</a>
 							<a href="${ctx}/assist/assist/delete?id=${assist.id}" onclick="return confirmx('确认要删除该帮扶状态吗？', this.href)">删除</a>
 						</shiro:hasPermission>
 						<shiro:hasPermission name="assist:assist:view">

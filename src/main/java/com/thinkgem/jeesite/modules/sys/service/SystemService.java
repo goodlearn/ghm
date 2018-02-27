@@ -1,20 +1,18 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.sys.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import org.activiti.engine.identity.Group;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.security.Digests;
@@ -25,6 +23,8 @@ import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.Encodes;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.Servlets;
+import com.thinkgem.jeesite.modules.assist.dao.AssistDao;
+import com.thinkgem.jeesite.modules.assist.entity.Assist;
 import com.thinkgem.jeesite.modules.sys.dao.MenuDao;
 import com.thinkgem.jeesite.modules.sys.dao.RoleDao;
 import com.thinkgem.jeesite.modules.sys.dao.UserDao;
@@ -34,11 +34,11 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.userinfo.dao.UserinfoDao;
+import com.thinkgem.jeesite.modules.userinfo.entity.Userinfo;
 
 /**
  * 系统管理，安全相关实体的管理类,包括用户、角色、菜单.
- * @author ThinkGem
- * @version 2013-12-05
  */
 @Service
 @Transactional(readOnly = true)
@@ -59,10 +59,261 @@ public class SystemService extends BaseService implements InitializingBean {
 	@Autowired
 	private SystemAuthorizingRealm systemRealm;
 	
+	@Autowired
+	private UserinfoDao userinfoDao;
+	
+	@Autowired
+	private AssistDao assistDao;
+	
 	public SessionDAO getSessionDao() {
 		return sessionDao;
 	}
 
+	
+	/**
+	 * 街道社区对应值
+	 */
+	private static Map<String, List<String>> street_community = Maps.newHashMap();
+	
+	/**
+	 * 查询用户权限
+	 * 只有四种权限 无权限 工会 街道 社区
+	 */
+	public int findRoleValue(User user) {
+		if(user.isAdmin()) {
+			return Global.GH_VALUE;
+		}
+		List<Role> roleList = user.getRoleList();
+		if(null == roleList || roleList.size() == 0) {
+			return Global.NULL_VALUE;
+		}
+		
+		int ret = 0;
+		for(Role forRole : roleList) {
+			String id = forRole.getId();
+			int temp = findRoleValueById(id);
+			if(temp > ret) {
+				ret = temp;
+			}
+		}
+		return ret;
+	}
+	
+	//街道对应的社区号
+	public List<String> findCkBySk(String communityKey){
+		if(street_community.isEmpty()) {
+			addDateSc();
+		}
+		return street_community.get(communityKey);
+	}
+	
+	//填充街道社区对应数据
+	private void addDateSc() {
+		
+		//杭盖街道办事处
+		List<String> hgValue = new ArrayList<String>();
+		String hgKey = "43";
+		hgValue.add("9");//青格勒社区
+		hgValue.add("14");//东风社区
+		hgValue.add("12");//呼格吉勒社区
+		hgValue.add("13");//长安社区
+		hgValue.add("15");//东胜社区
+		hgValue.add("16");//巴达日呼社区
+		hgValue.add("10");//德尔斯图社区
+		street_community.put(hgKey, hgValue);
+		
+		//楚古兰街道办事处
+		List<String> cglValue = new ArrayList<String>();
+		String cglKey = "44";
+		cglValue.add("2");//德吉社区
+		cglValue.add("0");//扎斯嘎图社区
+		cglValue.add("4");//伊特格勒社区
+		cglValue.add("1");//乌兰牧骑社区
+		cglValue.add("7");//爱民社区
+		cglValue.add("3");//楚鲁图社区
+		cglValue.add("8");//格日勒图社区
+		cglValue.add("6");//阿尔山社区
+		street_community.put(cglKey,cglValue );
+		
+		//额尔敦街道办事
+		List<String> eedValue = new ArrayList<String>();
+		String eedlKey = "45";
+		eedValue.add("18");//振兴社区
+		eedValue.add("19");//葛根敖包社区
+		eedValue.add("23");//新艾里社区
+		eedValue.add("20");//桃林塔拉社区
+		eedValue.add("21");//阿日噶朗图社区
+		eedValue.add("17");//罕尼乌拉社区
+		eedValue.add("22");//额尔德木腾社区
+		eedValue.add("24");//华油社区
+		street_community.put(eedlKey, eedValue);
+		
+		//希日塔拉街道办事处
+		List<String> xrtlValue = new ArrayList<String>();
+		String xrtllKey = "46";
+		xrtlValue.add("27");//乌兰社区
+		xrtlValue.add("28");//察哈尔社区
+		xrtlValue.add("29");//巴彦社区
+		xrtlValue.add("30");//花园社区
+		xrtlValue.add("31");//那达慕社区
+		xrtlValue.add("25");//新华社区
+		xrtlValue.add("26");//赛罕社区
+		street_community.put(xrtllKey, xrtlValue);
+		
+		//宝力根街道办事处
+		List<String> blgjValue = new ArrayList<String>();
+		String blgjKey = "47";
+		blgjValue.add("33");//额尔敦社区
+		blgjValue.add("34");//回民社区
+		blgjValue.add("35");//宝力根社区
+		blgjValue.add("36");//拉布仁社区
+		blgjValue.add("37");//兴盛社区
+		blgjValue.add("38");//甘珠尔社区
+		blgjValue.add("39");//乌兰图噶社区
+		street_community.put(blgjKey, blgjValue);
+		
+		//南郊街道办事处
+		List<String> njValue = new ArrayList<String>();
+		String njKey = "42";
+		street_community.put(njKey, njValue);
+		
+		//巴彦查干街道办事处
+		List<String> bycgValue = new ArrayList<String>();
+		String bycgKey = "48";
+		blgjValue.add("40");//达布希勒特社区
+		blgjValue.add("39");//塔林社区
+		blgjValue.add("41");//锡林社区
+		street_community.put(bycgKey, bycgValue);
+		
+	}
+	
+	//根据用户权限查询帮扶
+	public List<Assist> findAssistList(Assist assist){
+		User user = UserUtils.getUser();
+		if(user.isAdmin()) {
+			return assistDao.findList(assist);
+		}
+		int roleValue = findRoleValue(user);
+		if(roleValue == Global.STREET_VALUE){
+			//街道
+			return findAssistByStreet(user,assist);
+		}else if(roleValue == Global.COMMUNITY_VALUE){
+			//社区
+			String communityKey = user.getCommunityKey();
+			if(StringUtils.isNotEmpty(communityKey)) {
+				assist.setQueryCnk(communityKey);
+			}
+			return assistDao.findList(assist);
+		}else {
+			//工会及以上
+			return assistDao.findList(assist);
+		}
+	}
+	
+	//根据用户权限查询用户
+	public List<Userinfo> findUserInfoList(Userinfo userinfo){
+		User user = UserUtils.getUser();
+		if(user.isAdmin()) {
+			return userinfoDao.findList(userinfo);
+		}
+		int roleValue = findRoleValue(user);
+		if(roleValue == Global.STREET_VALUE){
+			//街道
+			return findUiByStreet(user,userinfo);
+		}else if(roleValue == Global.COMMUNITY_VALUE){
+			//社区
+			String communityKey = user.getCommunityKey();
+			if(StringUtils.isNotEmpty(communityKey)) {
+				userinfo.setCommunityKey(Integer.valueOf(communityKey));
+			}
+			return userinfoDao.findList(userinfo);
+		}else {
+			//工会及以上
+			return userinfoDao.findList(userinfo);
+		}
+	}
+	
+	//街道权限对应的用户
+	public List<Assist> findAssistByStreet(User user,Assist assist){
+		String communityKey = user.getCommunityKey();
+		if(StringUtils.isEmpty(communityKey)) {
+			return null;
+		}
+		List<String> ckList = findCkBySk(communityKey);
+		if(null == ckList || ckList.size() == 0) {
+			return null;
+		}
+		
+		List<Assist> collection = new ArrayList<Assist>();
+		for(String ck : ckList) {
+			assist.setQueryCnk(ck);
+			List<Assist> uiResult = assistDao.findList(assist);
+			if(null!=uiResult && uiResult.size() > 0) {
+				collection.addAll(uiResult);
+			}
+		}
+		return collection;
+	}
+	
+	//街道权限对应的用户
+	public List<Userinfo> findUiByStreet(User user,Userinfo userinfo){
+		String communityKey = user.getCommunityKey();
+		if(StringUtils.isEmpty(communityKey)) {
+			return null;
+		}
+		List<String> ckList = findCkBySk(communityKey);
+		if(null == ckList || ckList.size() == 0) {
+			return null;
+		}
+		
+		List<Userinfo> collection = new ArrayList<Userinfo>();
+		for(String ck : ckList) {
+			userinfo.setCommunityKey(Integer.valueOf(ck));
+			List<Userinfo> uiResult = userinfoDao.findList(userinfo);
+			if(null!=uiResult && uiResult.size() > 0) {
+				collection.addAll(uiResult);
+			}
+		}
+		return collection;
+	}
+	
+	/**
+	 * 查询用户
+	 * @param page
+	 * @param userinfo
+	 * @return
+	 */
+	public Page<Userinfo> findPage(Page<Userinfo> page, Userinfo userinfo) {
+		page.setOrderBy("update_date desc");
+		userinfo.setPage(page);
+		page.setList(findUserInfoList(userinfo));
+		return page;
+	}
+	
+	/**
+	 * 查询帮扶
+	 * @param page
+	 * @param userinfo
+	 * @return
+	 */
+	public Page<Assist> findPage(Page<Assist> page, Assist assist) {
+		page.setOrderBy("update_date desc");
+		assist.setPage(page);
+		page.setList(findAssistList(assist));
+		return page;
+	}
+	
+	//权限对应的id
+	private int findRoleValueById(String roleId) {
+		if(roleId.equals(Global.STREET_ID)){
+			return Global.STREET_VALUE;
+		}else if(roleId.equals(Global.COMMUNITY_ID)){
+			return Global.COMMUNITY_VALUE;
+		}else {
+			return Global.GH_VALUE;
+		}
+	}
+	
 
 	//-- User Service --//
 	

@@ -71,7 +71,7 @@
 		<div class="control-group">
 			<label class="control-label">内容：</label>
 			<div class="controls">
-				<form:textarea path="constants" htmlEscape="false" rows="4" class="input-xxlarge "/>
+				<form:textarea path="constants" htmlEscape="true" rows="4" class="input-xxlarge "/>
 			</div>
 		</div>
 		<div class="form-actions">

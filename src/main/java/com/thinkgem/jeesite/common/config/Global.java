@@ -32,6 +32,8 @@ public class Global {
 	 * 属性文件加载对象
 	 */
 	private static PropertiesLoader loader = new PropertiesLoader("jeesite.properties");
+	
+	
 
 	/**
 	 * 显示/隐藏
@@ -58,6 +60,21 @@ public class Global {
 	
 	public final static String GET_METHOD = "GET";
 	public final static String POST_METHOD = "POST";
+	
+	/**
+	 * 工会 街道 社区 的权限ID
+	 */
+	public final static String GH_ID = "1808356889601753284";//工会
+	public final static String STREET_ID = "497461525714709113";//街道
+	public final static String COMMUNITY_ID = "1889775118022826453";//社区
+	
+	/**
+	 * 权限
+	 */
+	public final static int GH_VALUE = 3;//工会
+	public final static int STREET_VALUE = 2;//街道
+	public final static int COMMUNITY_VALUE = 1;//社区
+	public final static int NULL_VALUE = 0;//无
 	
 	/**
 	 * 微信消息类型

@@ -31,10 +31,22 @@ public class Assist extends DataEntity<Assist>{
 	private Integer version;		// version
 	private Long userinfoId;		// userinfo_id
 	private Userinfo userInfo;//帮扶对象
+	private String queryCnk;//社区查询
 	private Date beginApplydate;
 	private Date endApplydate;
 	private String noSlashShow;//无帮扶附件
 	
+	
+	public String getQueryCnk() {
+		return queryCnk;
+	}
+
+
+	public void setQueryCnk(String queryCnk) {
+		this.queryCnk = queryCnk;
+	}
+
+
 	public Assist() {
 		super();
 	}

@@ -31,6 +31,7 @@ public class EmailHelper {
 	    private List<String> attachedFileNames;
 	    private String sendFileName;
 	    private List<String> sendFileNames;
+	    private String personName = "微帮扶小程序";
 	    
 	    /**发送邮件**/
 	    public  void sendMails(String file,String sendFileName,List<String> filePaths,List<String> fileNames){
@@ -120,7 +121,7 @@ public class EmailHelper {
 	        Message message = new MimeMessage(session);
 	        
 	        
-	        message.setFrom(new InternetAddress(from));        
+	        message.setFrom(new InternetAddress(from,personName));        
 	        
 	        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 	        
@@ -194,7 +195,7 @@ public class EmailHelper {
 	        Message message = new MimeMessage(session);
 	        
 	        
-	        message.setFrom(new InternetAddress(from));        
+	        message.setFrom(new InternetAddress(from,personName));        
 	        
 	        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 	        

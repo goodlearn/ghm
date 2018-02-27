@@ -123,8 +123,8 @@
 			<if test="beginApplydate != null and endApplydate != null and beginApplydate != '' and endApplydate != ''">
 				AND a.applyDate BETWEEN #{beginApplydate} AND #{endApplydate}
 			</if>
-			<if test="userInfo != null and userInfo.communityKey != null and userInfo.communityKey != ''">
-				AND u.communityKey =  #{userInfo.communityKey}
+			<if test="queryCnk != null  and queryCnk != ''">
+				AND u.communityKey =  #{queryCnk}
 			</if>
 		</where>
 		<choose>

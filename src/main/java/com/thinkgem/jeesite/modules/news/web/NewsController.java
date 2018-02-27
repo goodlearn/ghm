@@ -1,11 +1,9 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.news.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,6 +64,10 @@ public class NewsController extends BaseController {
 	public String save(News news, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, news)){
 			return form(news, model);
+		}
+		String content = news.getConstants();
+		if(null!=content) {
+			news.setConstants(StringEscapeUtils.unescapeHtml4(content.trim()));
 		}
 		newsService.save(news);
 		addMessage(redirectAttributes, "保存新闻信息成功");

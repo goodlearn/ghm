@@ -40,6 +40,7 @@ import com.thinkgem.jeesite.modules.assist.service.AssistService;
 import com.thinkgem.jeesite.modules.famliyship.entity.Famliyrelationship;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.userinfo.entity.Userinfo;
@@ -60,6 +61,9 @@ public class AssistController extends BaseController {
 	@Autowired
 	private UserinfoService userinfoService;
 	
+	@Autowired
+	private SystemService systemService;
+	
 	@ModelAttribute
 	public Assist get(@RequestParam(required=false) String id,@RequestParam(required=false) String userInfoIdCard) {
 		Assist entity = null;
@@ -78,11 +82,9 @@ public class AssistController extends BaseController {
 		User user = UserUtils.getUser();
 		String communityKey = user.getCommunityKey();
 		if(StringUtils.isNotEmpty(communityKey)) {
-			Userinfo userinfo = new Userinfo();
-			userinfo.setCommunityKey(Integer.valueOf(communityKey));
-			assist.setUserInfo(userinfo);
+			assist.setQueryCnk(communityKey);
 		}
-		Page<Assist> page = assistService.findPage(new Page<Assist>(request, response), assist); 
+		Page<Assist> page = systemService.findPage(new Page<Assist>(request, response), assist); 
 		model.addAttribute("page", page);
 		return "modules/assist/assistList";
 	}

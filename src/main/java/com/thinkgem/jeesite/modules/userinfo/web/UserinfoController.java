@@ -34,6 +34,7 @@ import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.modules.famliyship.entity.Famliyrelationship;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.userinfo.entity.Userinfo;
 import com.thinkgem.jeesite.modules.userinfo.service.UserinfoService;
@@ -49,6 +50,9 @@ public class UserinfoController extends BaseController {
 
 	@Autowired
 	private UserinfoService userinfoService;
+	
+	@Autowired
+	private SystemService systemService;
 	
 	@ModelAttribute
 	public Userinfo get(@RequestParam(required=false) String id) {
@@ -70,7 +74,7 @@ public class UserinfoController extends BaseController {
 		if(StringUtils.isNotEmpty(communityKey)) {
 			userinfo.setCommunityKey(Integer.valueOf(communityKey));
 		}
-		Page<Userinfo> page = userinfoService.findPage(new Page<Userinfo>(request, response), userinfo); 
+		Page<Userinfo> page = systemService.findPage(new Page<Userinfo>(request, response), userinfo); 
 		model.addAttribute("page", page);
 		return "modules/userinfo/userinfoList";
 	}
