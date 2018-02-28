@@ -160,7 +160,7 @@ public class SystemService extends BaseService implements InitializingBean {
 			}
 		}
 		Integer ghKey = Global.GH_VALUE;
-		assist_state.put(ghKey, street);
+		assist_state.put(ghKey, gh);
 		
 	}
 	
@@ -252,7 +252,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		
 		if(roleValue == Global.STREET_VALUE||
 				roleValue == Global.COMMUNITY_VALUE||
-					roleValue == Global.COMMUNITY_VALUE){
+					roleValue == Global.GH_VALUE){
 			//街道
 			return findDict(roleValue);
 		}else {
@@ -274,7 +274,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		}else if(roleValue == Global.COMMUNITY_VALUE){
 			//社区
 			return findAssistByCommunity(user,assist);
-		}else if(roleValue == Global.COMMUNITY_VALUE){
+		}else if(roleValue == Global.GH_VALUE){
 			//工会
 			return findAssistByGh(user,assist);
 		}else {
