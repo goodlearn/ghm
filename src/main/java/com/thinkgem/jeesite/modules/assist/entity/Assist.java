@@ -26,17 +26,43 @@ public class Assist extends DataEntity<Assist>{
 	private Date applyDate;	
 	
 	/**帮扶状态**/
-	private Integer assistState = 0;
+	private Integer assistState;
 	private Boolean staticFlag;		// staticflag
 	private Integer version;		// version
 	private Long userinfoId;		// userinfo_id
 	private Userinfo userInfo;//帮扶对象
 	private String queryCnk;//社区查询
+	
+	//时间
 	private Date beginApplydate;
 	private Date endApplydate;
+	//帮扶状态
+	private Integer beginAssistState;
+	private Integer endAssistState;
+	
 	private String noSlashShow;//无帮扶附件
 	
 	
+	public Integer getBeginAssistState() {
+		return beginAssistState;
+	}
+
+
+	public void setBeginAssistState(Integer beginAssistState) {
+		this.beginAssistState = beginAssistState;
+	}
+
+
+	public Integer getEndAssistState() {
+		return endAssistState;
+	}
+
+
+	public void setEndAssistState(Integer endAssistState) {
+		this.endAssistState = endAssistState;
+	}
+
+
 	public String getQueryCnk() {
 		return queryCnk;
 	}

@@ -69,6 +69,10 @@ public class NewsController extends BaseController {
 		if(null!=content) {
 			news.setConstants(StringEscapeUtils.unescapeHtml4(content.trim()));
 		}
+		String title = news.getTitle();
+		if(null!=title) {
+			news.setTitle(StringEscapeUtils.unescapeHtml4(title.trim()));
+		}
 		newsService.save(news);
 		addMessage(redirectAttributes, "保存新闻信息成功");
 		return "redirect:"+Global.getAdminPath()+"/news/news/list";

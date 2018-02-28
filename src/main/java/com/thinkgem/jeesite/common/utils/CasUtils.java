@@ -666,6 +666,9 @@ public class CasUtils {
     /** 输出格式: 2006-01-01*/
     private static DateFormat sdfWithYMD = new SimpleDateFormat("yyyy-MM-dd");
 
+    /**Mon Dec 28 00:00:00 CST 2008**/
+    private static DateFormat sdfWithUS = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+
 
     /**
      * 输出格式: 2006-4-16
@@ -711,6 +714,25 @@ public class CasUtils {
      */
     public static String convertDate2YMDString(Date date){
         return sdfWithYMD.format(date);
+    }
+    
+    /**
+     * 输入格式 Mon Dec 28 00:00:00 CST 2008
+     *输出格式: yyyy-MM-dd
+     * @param date
+     * @return
+     * @throws Exception
+     */
+    public static String convertStringYMDDate(String param){
+    	String str = null;
+    	try {
+    		Date date = sdfWithUS.parse(param);
+        	DateFormat temp = new SimpleDateFormat("yyyy-MM-dd");
+        	str = temp.format(date);// 获得格式化后的日期字符串
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return str;
     }
 
     /**

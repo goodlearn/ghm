@@ -69,11 +69,6 @@ public class UserinfoController extends BaseController {
 	@RequiresPermissions("userinfo:userinfo:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Userinfo userinfo, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User user = UserUtils.getUser();
-		String communityKey = user.getCommunityKey();
-		if(StringUtils.isNotEmpty(communityKey)) {
-			userinfo.setCommunityKey(Integer.valueOf(communityKey));
-		}
 		Page<Userinfo> page = systemService.findPage(new Page<Userinfo>(request, response), userinfo); 
 		model.addAttribute("page", page);
 		return "modules/userinfo/userinfoList";
@@ -151,7 +146,28 @@ public class UserinfoController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/userinfo/userinfo/?repage";
 	}
 	
-	
+	/**
+	 * 导入用户数据
+	 * @param file
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("userinfo:userinfo:batchedit")
+    @RequestMapping(value = "importNew", method=RequestMethod.POST)
+    public String importNew(MultipartFile file, RedirectAttributes redirectAttributes) {
+		try {
+			String error = userinfoService.processExcel(userinfoService.excel(file));
+			if(null == error) {
+				addMessage(redirectAttributes, "成功导入 ");
+			}else {
+				addMessage(redirectAttributes, error);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			addMessage(redirectAttributes, "导入用户失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/userinfo/userinfo/list?repage";
+	}
 	/**
 	 * 导入用户数据
 	 * @param file

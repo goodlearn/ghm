@@ -51,7 +51,7 @@
 			<div class="controls">
 				<form:select path="assistState" class="input-xlarge ">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('assistState')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${assistStateParam}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 		</div>

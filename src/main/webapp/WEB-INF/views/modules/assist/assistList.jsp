@@ -31,7 +31,7 @@
 			<li><label>帮扶状态：</label>
 				<form:select path="assistState" class="input-medium">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('assistState')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${assistStateParam}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li>
 			<li><label>申请时间：</label>

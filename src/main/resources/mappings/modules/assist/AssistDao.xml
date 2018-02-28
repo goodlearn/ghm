@@ -54,7 +54,10 @@
 		u.salaryFamliy AS "userInfo.salaryFamliy",
 		u.salaryPerson AS "userInfo.salaryPerson",
 		u.serialNumber AS "userInfo.serialNumber",
-		u.subsistenceAllowances AS "userInfo.subsistenceAllowances"
+		u.subsistenceAllowances AS "userInfo.subsistenceAllowances",
+		u.advanced AS "userInfo.advanced",
+		u.labor AS "userInfo.labor",
+		u.certificate AS "userInfo.certificate"
 	</sql>
 	
 	<sql id="assistJoins">
@@ -123,8 +126,11 @@
 			<if test="beginApplydate != null and endApplydate != null and beginApplydate != '' and endApplydate != ''">
 				AND a.applyDate BETWEEN #{beginApplydate} AND #{endApplydate}
 			</if>
+			<if test="beginAssistState != null and endAssistState != null and beginAssistState != '' and endAssistState != ''">
+				AND a.assistState BETWEEN #{beginAssistState} AND #{endAssistState}
+			</if>
 			<if test="queryCnk != null  and queryCnk != ''">
-				AND u.communityKey =  #{queryCnk}
+				AND u.communityKey in (  #{queryCnk} )
 			</if>
 		</where>
 		<choose>

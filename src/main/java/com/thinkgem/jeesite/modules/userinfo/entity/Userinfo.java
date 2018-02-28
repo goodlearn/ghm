@@ -60,6 +60,12 @@ public class Userinfo extends DataEntity<Userinfo> {
 	/**是否农牧民**/
 	private Boolean farmersAndHerdsmen;
 	
+	private String advanced;//劳模先进
+	
+	private String labor;//五一劳动
+	
+	private String certificate;//证件类型
+	
 	/**
 	 * 所在工会组织
 	 */
@@ -196,6 +202,17 @@ public class Userinfo extends DataEntity<Userinfo> {
 
 	private Long assistId;		// assist_id
 	
+	private String queryCnk;//社区查询
+	
+	
+	public String getQueryCnk() {
+		return queryCnk;
+	}
+
+	public void setQueryCnk(String queryCnk) {
+		this.queryCnk = queryCnk;
+	}
+
 	public Userinfo() {
 		super();
 	}
@@ -617,5 +634,30 @@ public class Userinfo extends DataEntity<Userinfo> {
 	public void setAssistId(Long assistId) {
 		this.assistId = assistId;
 	}
+
+	public String getAdvanced() {
+		return advanced;
+	}
+
+	public void setAdvanced(String advanced) {
+		this.advanced = advanced;
+	}
+
+	public String getLabor() {
+		return labor;
+	}
+
+	public String getCertificate() {
+		return certificate;
+	}
+
+	public void setCertificate(String certificate) {
+		this.certificate = certificate;
+	}
+
+	public void setLabor(String labor) {
+		this.labor = labor;
+	}
+	
 	
 }

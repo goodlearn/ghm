@@ -20,7 +20,9 @@ public class BaseUserinfoService extends CrudService<UserinfoDao, Userinfo> {
 		userinfo.setFamliyNum(1);
 		userinfo.setStaticFlag(true);
 		userinfo.setVersion(1);
-		userinfo.setMembershipTime(CasUtils.convertDate2HMSString(new Date()));
+		if(null == userinfo.getMembershipTime()) {
+			userinfo.setMembershipTime(CasUtils.convertDate2HMSString(new Date()));
+		}
 	}
 
 	//补充字典数据 比如政治面貌是 党员 群众

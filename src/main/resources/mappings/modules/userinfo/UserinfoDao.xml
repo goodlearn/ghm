@@ -50,7 +50,10 @@
 		a.update_by AS "updateBy.id",
 		a.update_date,
 		a.del_flag,
-		a.assist_id AS "assistId"
+		a.assist_id AS "assistId",
+		advanced,
+		labor,
+		certificate
 	</sql>
 	
 	<sql id="userinfoJoins">
@@ -125,6 +128,9 @@
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="queryCnk != null  and queryCnk != ''">
+				AND a.communityKey in (  #{queryCnk} )
 			</if>
 		</where>
 		<choose>
@@ -202,7 +208,10 @@
 			update_by, 
 			update_date, 
 			del_flag,
-			assist_id
+			assist_id,
+			advanced,
+			labor,
+			certificate
 		) VALUES (
 			#{id},
 			#{birth},
@@ -251,7 +260,10 @@
 			#{updateBy.id}, 
 			#{updateDate}, 
 			#{delFlag},
-			#{assistId}
+			#{assistId},
+			#{advanced},
+			#{labor},
+			#{certificate}
 		)
 	</insert>
 	
@@ -300,7 +312,10 @@
 			version = #{version},
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
-			assist_id = #{assistId}
+			assist_id = #{assistId},
+			advanced = #{advanced},
+			labor = #{labor},
+			certificate = #{certificate}
 		WHERE id = #{id}
 	</update>
 	

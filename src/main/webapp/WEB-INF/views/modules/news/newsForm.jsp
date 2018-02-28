@@ -36,7 +36,7 @@
 		<div class="control-group">
 			<label class="control-label">标题：</label>
 			<div class="controls">
-				<form:input path="title" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="title" htmlEscape="true" maxlength="255" class="input-xlarge "/>
 			</div>
 		</div>	
 		<div class="control-group">

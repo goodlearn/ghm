@@ -28,10 +28,12 @@ import com.thinkgem.jeesite.modules.assist.entity.Assist;
 import com.thinkgem.jeesite.modules.sys.dao.MenuDao;
 import com.thinkgem.jeesite.modules.sys.dao.RoleDao;
 import com.thinkgem.jeesite.modules.sys.dao.UserDao;
+import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.Menu;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.userinfo.dao.UserinfoDao;
@@ -74,6 +76,10 @@ public class SystemService extends BaseService implements InitializingBean {
 	 * 街道社区对应值
 	 */
 	private static Map<String, List<String>> street_community = Maps.newHashMap();
+	/**
+	 * 街道社区对应状态
+	 */
+	private static Map<Integer, List<Dict>> assist_state = Maps.newHashMap();
 	
 	/**
 	 * 查询用户权限
@@ -105,6 +111,57 @@ public class SystemService extends BaseService implements InitializingBean {
 			addDateSc();
 		}
 		return street_community.get(communityKey);
+	}
+	
+	//获取对应的状态
+	public List<Dict> findDict(int key){
+		if(assist_state.isEmpty()) {
+			addDateAssistState();
+		}
+		return assist_state.get(key);
+	}
+	
+	//填充街道社区对应数据
+	private void addDateAssistState() {
+		
+		List<Dict> dictList = DictUtils.getDictList("assistState");
+		//社区
+		List<Dict> community = new ArrayList<Dict>();
+		for(Dict forDict :dictList) {
+			String value = forDict.getValue();
+			if(value.equals("0")||
+					value.equals("1")) {
+				community.add(forDict);
+			}
+		}
+		Integer communityKey = Global.COMMUNITY_VALUE;
+		assist_state.put(communityKey, community);
+		
+		//街道
+		List<Dict> street = new ArrayList<Dict>();
+		for(Dict forDict :dictList) {
+			String value = forDict.getValue();
+			if(value.equals("1")||
+					value.equals("2")) {
+				street.add(forDict);
+			}
+		}
+		Integer streetKey = Global.STREET_VALUE;
+		assist_state.put(streetKey, street);
+		
+		//工会
+		List<Dict> gh = new ArrayList<Dict>();
+		for(Dict forDict :dictList) {
+			String value = forDict.getValue();
+			if(value.equals("2")||
+					value.equals("3")||
+						value.equals("4")) {
+				gh.add(forDict);
+			}
+		}
+		Integer ghKey = Global.GH_VALUE;
+		assist_state.put(ghKey, street);
+		
 	}
 	
 	//填充街道社区对应数据
@@ -187,6 +244,23 @@ public class SystemService extends BaseService implements InitializingBean {
 		
 	}
 	
+	public List<Dict> findAssistState(User user){
+		if(user.isAdmin()) {
+			return  DictUtils.getDictList("assistState");
+		}
+		int roleValue = findRoleValue(user);
+		
+		if(roleValue == Global.STREET_VALUE||
+				roleValue == Global.COMMUNITY_VALUE||
+					roleValue == Global.COMMUNITY_VALUE){
+			//街道
+			return findDict(roleValue);
+		}else {
+			//以上
+			return DictUtils.getDictList("assistState");
+		}
+	}
+	
 	//根据用户权限查询帮扶
 	public List<Assist> findAssistList(Assist assist){
 		User user = UserUtils.getUser();
@@ -199,15 +273,35 @@ public class SystemService extends BaseService implements InitializingBean {
 			return findAssistByStreet(user,assist);
 		}else if(roleValue == Global.COMMUNITY_VALUE){
 			//社区
-			String communityKey = user.getCommunityKey();
-			if(StringUtils.isNotEmpty(communityKey)) {
-				assist.setQueryCnk(communityKey);
-			}
-			return assistDao.findList(assist);
+			return findAssistByCommunity(user,assist);
+		}else if(roleValue == Global.COMMUNITY_VALUE){
+			//工会
+			return findAssistByGh(user,assist);
 		}else {
-			//工会及以上
+			//以上
 			return assistDao.findList(assist);
 		}
+	}
+	
+	//工会帮扶
+	private List<Assist> findAssistByGh(User user,Assist assist){
+		assist.setBeginAssistState(2);
+		assist.setEndAssistState(4);
+		return assistDao.findList(assist);
+	}
+	
+	//社区帮扶
+	private List<Assist> findAssistByCommunity(User user,Assist assist){
+		
+		//社区
+		String communityKey = user.getCommunityKey();
+		if(StringUtils.isNotEmpty(communityKey)) {
+			assist.setQueryCnk(communityKey);
+		}
+		assist.setBeginAssistState(0);
+		assist.setEndAssistState(1);
+		
+		return assistDao.findList(assist);
 	}
 	
 	//根据用户权限查询用户
@@ -240,19 +334,21 @@ public class SystemService extends BaseService implements InitializingBean {
 			return null;
 		}
 		List<String> ckList = findCkBySk(communityKey);
-		if(null == ckList || ckList.size() == 0) {
-			return null;
-		}
-		
-		List<Assist> collection = new ArrayList<Assist>();
-		for(String ck : ckList) {
-			assist.setQueryCnk(ck);
-			List<Assist> uiResult = assistDao.findList(assist);
-			if(null!=uiResult && uiResult.size() > 0) {
-				collection.addAll(uiResult);
+		if(null != ckList && ckList.size() > 0) {
+			StringBuilder sb = new StringBuilder();
+			for(int i = 0;i<ckList.size();i++) {
+				if(i == (ckList.size() - 1)) {
+					sb.append(ckList.get(i));
+				}else {
+					sb.append(ckList.get(i));
+					sb.append(",");
+				}
 			}
+			assist.setQueryCnk(sb.toString());
 		}
-		return collection;
+		assist.setBeginAssistState(1);
+		assist.setEndAssistState(12);
+		return assistDao.findList(assist);		
 	}
 	
 	//街道权限对应的用户
@@ -262,19 +358,19 @@ public class SystemService extends BaseService implements InitializingBean {
 			return null;
 		}
 		List<String> ckList = findCkBySk(communityKey);
-		if(null == ckList || ckList.size() == 0) {
-			return null;
-		}
-		
-		List<Userinfo> collection = new ArrayList<Userinfo>();
-		for(String ck : ckList) {
-			userinfo.setCommunityKey(Integer.valueOf(ck));
-			List<Userinfo> uiResult = userinfoDao.findList(userinfo);
-			if(null!=uiResult && uiResult.size() > 0) {
-				collection.addAll(uiResult);
+		if(null != ckList && ckList.size() > 0) {
+			StringBuilder sb = new StringBuilder();
+			for(int i = 0;i<ckList.size();i++) {
+				if(i == (ckList.size() - 1)) {
+					sb.append(ckList.get(i));
+				}else {
+					sb.append(ckList.get(i));
+					sb.append(",");
+				}
 			}
+			userinfo.setQueryCnk(sb.toString());
 		}
-		return collection;
+		return userinfoDao.findList(userinfo);
 	}
 	
 	/**

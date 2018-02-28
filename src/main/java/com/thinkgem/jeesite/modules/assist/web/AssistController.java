@@ -79,13 +79,9 @@ public class AssistController extends BaseController {
 	@RequiresPermissions("assist:assist:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Assist assist, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User user = UserUtils.getUser();
-		String communityKey = user.getCommunityKey();
-		if(StringUtils.isNotEmpty(communityKey)) {
-			assist.setQueryCnk(communityKey);
-		}
 		Page<Assist> page = systemService.findPage(new Page<Assist>(request, response), assist); 
 		model.addAttribute("page", page);
+		model.addAttribute("assistStateParam", systemService.findAssistState(UserUtils.getUser()));
 		return "modules/assist/assistList";
 	}
 
@@ -93,6 +89,7 @@ public class AssistController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(Assist assist, Model model) {
 		model.addAttribute("assist", assist);
+		model.addAttribute("assistStateParam", systemService.findAssistState(UserUtils.getUser()));
 		return "modules/assist/assistForm";
 	}
 	
