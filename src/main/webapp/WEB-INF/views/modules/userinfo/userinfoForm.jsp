@@ -86,7 +86,7 @@
 				<tr>
 					<td class="tit">电话号码</td>
 					<td>
-						<form:input path="phoneNumber" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+						<form:input path="phoneNumber" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
 					</td>
 					<td class="tit">文化程度</td>
 					<td>
