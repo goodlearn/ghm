@@ -50,11 +50,21 @@
 				<tr>
 					<td class="tit">性别</td>
 					<td>
-						<form:radiobuttons path="gender" items="${fns:getDictList('gender')}" itemLabel="label" itemValue="value" htmlEscape="false" class="input-xlarge required"/>
+						<form:radiobuttons path="gender" items="${fns:getDictList('gender')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
 					</td>
+					<td class="tit">健康</td>
+					<td>
+						<form:input path="healthy" htmlEscape="false" class="input-xlarge "/>
+					</td>
+				</tr>
+				<tr>
+					<td class="tit">身份</td>
+					<td>
+						<form:input path="identity" htmlEscape="false" maxlength="255" class="input-xlarge "/>					
+					</td>	
 					<td class="tit">民族</td>
 					<td>
-						<form:select path="nationKey" class="input-xlarge required">
+						<form:select path="nationKey" class="input-xlarge">
 							<form:option value="" label="请选择"/>
 							<form:options items="${fns:getDictList('nationKey')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>						
@@ -84,9 +94,29 @@
 					</td>
 				</tr>
 				<tr>
+					<td class="tit">残疾类别</td>
+					<td>
+						<form:input path="disability" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+					</td>
 					<td class="tit">家庭地址</td>
 					<td>
 						<form:input path="famliyAddress" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+					</td>
+				</tr>
+				<tr>
+					<td class="tit">住房面积</td>
+					<td>
+						<form:input path="housingArea" htmlEscape="false" class="input-xlarge "/>
+					</td>
+					<td class="tit">住房类型</td>
+					<td>
+						<form:input path="housingKind" htmlEscape="false" class="input-xlarge "/>
+					</td>
+				</tr>
+				<tr>
+					<td class="tit">证件类型</td>
+					<td>
+						<form:input path="certificate" htmlEscape="false" class="input-xlarge "/>
 					</td>
 					<td class="tit">身份证号</td>
 					<td>
@@ -95,13 +125,35 @@
 					</td>
 				</tr>
 				<tr>
+					<td class="tit">保险情况</td>
+					<td>
+						<form:select path="insuranceKey" class="input-xlarge">
+							<form:option value="" label="请选择"/>
+							<form:options items="${fns:getDictList('insuranceKey')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						</form:select>						</td>
+					<td class="tit">婚姻状况</td>
+					<td>
+						<form:input path="marriage" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="tit">劳模类型</td>
+					<td>
+						<form:input path="modelWorker" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
+					</td>
 					<td class="tit">工作单位</td>
 					<td>
 						<form:input path="originalWorkAddress" htmlEscape="false" maxlength="255" class="input-xlarge "/>
 					</td>
+				</tr>
+					<tr>
 					<td class="tit">政治面貌</td>
 					<td>
 						<form:input path="politicalLandscape" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+					</td>
+					<td class="tit">困难类别</td>
+					<td>
+						<form:input path="problemKind" htmlEscape="false" maxlength="255" class="input-xlarge "/>
 					</td>
 				</tr>
 				<tr>
@@ -126,13 +178,47 @@
 					</td>
 				</tr>
 				<tr>
+					<td class="tit">家庭月收入</td>
+					<td>
+						<form:input path="salaryFamliy" htmlEscape="false" class="input-xlarge "/>
+					</td>
+					<td class="tit">个人月收入</td>
+					<td>
+						<form:input path="salaryPerson" htmlEscape="false" class="input-xlarge "/>
+					</td>
+				</tr>
+					<tr>
 					<td class="tit">是否农民工</td>
 					<td>
 						<form:radiobuttons path="farmersAndHerdsmen" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
 					</td>
+					<td class="tit">是否参加医保</td>
+					<td>
+						<form:radiobuttons path="medicalInsurance" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
+					</td>
+				</tr>
+				</tr>
+					<tr>
 					<td class="tit">是否劳模先进</td>
 					<td>
 						<form:radiobuttons path="advanced" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
+					</td>
+					<td class="tit">是否五一劳动</td>
+					<td>
+						<form:radiobuttons path="labor" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
+					</td>
+				</tr>
+				<tr>
+					<td class="tit">是否享受低保</td>
+					<td>
+						<form:radiobuttons path="subsistenceAllowances" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
+					</td>
+					<td class="tit">收入来源</td>
+					<td>
+						<form:select path="incomeSourceKey" class="input-xlarge">
+							<form:option value="" label="请选择"/>
+							<form:options items="${fns:getDictList('incomeSourceKey')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						</form:select>						
 					</td>
 				</tr>
 				<tr>
