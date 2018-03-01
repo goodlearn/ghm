@@ -39,7 +39,7 @@
 				<tr>
 					<td class="tit">姓名</td>
 					<td>
-						<form:input path="marriage" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
+						<form:input path="name" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
 					</td>
 					<td class="tit">生日</td>
 					<td>
@@ -77,7 +77,7 @@
 					</td>
 					<td class="tit">社区</td>
 					<td>
-						<form:select path="communityKey" class="input-xlarge ">
+						<form:select path="communityKey" class="input-xlarge required">
 							<form:option value="" label=""/>
 							<form:options items="${fns:getDictList('ce_serial')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>	
@@ -114,16 +114,14 @@
 					</td>
 				</tr>
 				<tr>
+					<td class="tit">证件类型</td>
+					<td>
+						<form:input path="certificate" htmlEscape="false" class="input-xlarge "/>
+					</td>
 					<td class="tit">身份证号</td>
 					<td>
 						<form:input path="idCard" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
-						<span class="help-inline"><font color="red">*</font> </span>					</td>
-					<td class="tit">收入来源</td>
-					<td>
-						<form:select path="incomeSourceKey" class="input-xlarge">
-							<form:option value="" label="请选择"/>
-							<form:options items="${fns:getDictList('incomeSourceKey')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-						</form:select>						
+						<span class="help-inline"><font color="red">*</font> </span>					
 					</td>
 				</tr>
 				<tr>
@@ -199,13 +197,28 @@
 						<form:radiobuttons path="medicalInsurance" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
 					</td>
 				</tr>
+				</tr>
+					<tr>
+					<td class="tit">是否劳模先进</td>
+					<td>
+						<form:radiobuttons path="advanced" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
+					</td>
+					<td class="tit">是否五一劳动</td>
+					<td>
+						<form:radiobuttons path="labor" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
+					</td>
+				</tr>
 				<tr>
 					<td class="tit">是否享受低保</td>
 					<td>
 						<form:radiobuttons path="subsistenceAllowances" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class=""/>
 					</td>
-					<td class="tit"></td>
+					<td class="tit">收入来源</td>
 					<td>
+						<form:select path="incomeSourceKey" class="input-xlarge">
+							<form:option value="" label="请选择"/>
+							<form:options items="${fns:getDictList('incomeSourceKey')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						</form:select>						
 					</td>
 				</tr>
 				<tr>

@@ -28,6 +28,7 @@ import com.thinkgem.jeesite.modules.assist.dao.AssistDao;
 import com.thinkgem.jeesite.modules.assist.entity.Assist;
 import com.thinkgem.jeesite.modules.famliyship.dao.FamliyrelationshipDao;
 import com.thinkgem.jeesite.modules.famliyship.entity.Famliyrelationship;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 
 /**
  * userInfoService
@@ -205,8 +206,21 @@ public class UserinfoService extends BaseUserinfoService {
 		userinfo.setCertificate(vie.getCertificate());
 		userinfo.setIdCard(vie.getIdCard());
 		userinfo.setPhoneNumber(vie.getPhone());
-		userinfo.setAdvanced(vie.getAdvanced());
-		userinfo.setLabor(vie.getLabor());
+		String yes = DictUtils.getDictLabel("1", "yes_no", "是");
+		
+		//劳模先进
+		String advanced = vie.getAdvanced();
+		if(yes.equals(advanced)) {
+			userinfo.setAdvanced(DictUtils.getDictValue(yes, "yes_no", "1"));
+		}
+		
+		//五一劳动
+		String labor = vie.getLabor();
+		if(yes.equals(labor)) {
+			userinfo.setLabor(DictUtils.getDictValue(yes, "yes_no", "1"));
+		}
+		
+		//是否农牧民
 		String farmersAndHerdsmen = vie.getFarmersAndHerdsmen();
 		boolean isFah = false;
 		if(null!=farmersAndHerdsmen) {
@@ -216,6 +230,7 @@ public class UserinfoService extends BaseUserinfoService {
 		}
 		userinfo.setFarmersAndHerdsmen(isFah);
 		
+		userinfo.setRemarks(vie.getRemark());
 	}
 	
 	/**
@@ -282,6 +297,9 @@ public class UserinfoService extends BaseUserinfoService {
 				}
 				if(j == 10) {//是否农牧民
 					entity.setFarmersAndHerdsmen(val.toString());
+				}
+				if(j == 11) {//是否农牧民
+					entity.setRemark(val.toString());
 				}
 			}
 			ret.add(entity);

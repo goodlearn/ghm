@@ -44,14 +44,14 @@
 				<tr>
 					<td class="tit">电话号码</td>
 					<td colspan="2">${userinfo.phoneNumber}</td>
+					<td class="tit">证件类型</td>
+					<td colspan="2">${userinfo.certificate}</td>
 					<td class="tit">身份证号</td>
 					<td colspan="2">${userinfo.idCard}</td>
 					<td class="tit">出生日期</td>
 					<td colspan="2">${userinfo.birth}</td>
 					<td class="tit">是否参加医保</td>
 					<td colspan="2">${fns:getDictLabel(userinfo.medicalInsurance,'true_false','')}</td>
-					<td class="tit">是否享受低保</td>
-					<td colspan="2">${fns:getDictLabel(userinfo.subsistenceAllowances,'true_false','')}</td>
 				</tr>
 				<tr>
 					<td class="tit">工作单位</td>
@@ -90,6 +90,12 @@
 					<td colspan="2">${userinfo.identity}</td>
 				</tr>
 				<tr>
+					<td class="tit">是否享受低保</td>
+					<td colspan="2">${fns:getDictLabel(userinfo.subsistenceAllowances,'true_false','')}</td>
+					<td class="tit">劳模先进</td>
+					<td colspan="2">${fns:getDictLabel(userinfo.advanced,'yes_no','')}</td>
+					<td class="tit">五一劳动</td>
+					<td colspan="2">${fns:getDictLabel(userinfo.labor,'yes_no','')}</td>
 					<td class="tit">备注</td>
 					<td colspan="5">
 						${userinfo.remarks}

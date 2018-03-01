@@ -28,8 +28,18 @@ public class ViewUserInfoExcel {
 	private String labor;//五一劳动
 	
 	private String farmersAndHerdsmen;//是否农牧民
-
 	
+	private String remark;
+	
+	
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
 	public String getName() {
 		return name;
 	}
