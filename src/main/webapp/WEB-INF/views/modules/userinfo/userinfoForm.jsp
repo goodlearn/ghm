@@ -40,6 +40,7 @@
 					<td class="tit">姓名</td>
 					<td>
 						<form:input path="name" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
+						<span class="help-inline"><font color="red">*</font> </span>		
 					</td>
 					<td class="tit">生日</td>
 					<td>
@@ -51,13 +52,15 @@
 					<td class="tit">性别</td>
 					<td>
 						<form:radiobuttons path="gender" items="${fns:getDictList('gender')}" itemLabel="label" itemValue="value" htmlEscape="false" class="input-xlarge required"/>
+						<span class="help-inline"><font color="red">*</font> </span>		
 					</td>
 					<td class="tit">民族</td>
 					<td>
 						<form:select path="nationKey" class="input-xlarge required">
 							<form:option value="" label="请选择"/>
 							<form:options items="${fns:getDictList('nationKey')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-						</form:select>						
+						</form:select>		
+						<span class="help-inline"><font color="red">*</font> </span>								
 					</td>
 				</tr>
 				<tr>	
@@ -71,12 +74,14 @@
 							<form:option value="" label=""/>
 							<form:options items="${fns:getDictList('ce_serial')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>	
+						<span class="help-inline"><font color="red">*</font> </span>		
 					</td>	
 				</tr>
 				<tr>
 					<td class="tit">电话号码</td>
 					<td>
 						<form:input path="phoneNumber" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
+						<span class="help-inline"><font color="red">*</font> </span>		
 					</td>
 					<td class="tit">文化程度</td>
 					<td>
