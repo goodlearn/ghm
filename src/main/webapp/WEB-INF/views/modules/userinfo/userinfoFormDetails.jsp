@@ -24,10 +24,10 @@
 					<td colspan="2">
 						<c:choose>
 							<c:when test="${userinfo.gender}">
-								${fns:getDictLabel('1','gender','')}
+								${fns:getDictLabel('true','gender','')}
 							</c:when>
 							 <c:otherwise> 
-								${fns:getDictLabel('0','gender','')}
+								${fns:getDictLabel('false','gender','')}
 							 </c:otherwise>
 						</c:choose>
 					</td>							
@@ -63,7 +63,7 @@
 					<td class="tit">邮政编码</td>
 					<td colspan="2">${userinfo.postCode}</td>
 					<td class="tit">政治面貌</td>
-					<td colspan="2">${fns:getDictValue(userinfo.politicalLandscape,'politicalLandscapeKey','')}</td>
+					<td colspan="2">${userinfo.politicalLandscape}</td>
 				</tr>
 				<tr>
 					<td class="tit">家庭住址</td>

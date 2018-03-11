@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,7 @@ import com.thinkgem.jeesite.modules.assist.entity.Assist;
 import com.thinkgem.jeesite.modules.famliyship.dao.FamliyrelationshipDao;
 import com.thinkgem.jeesite.modules.famliyship.entity.Famliyrelationship;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * userInfoService
@@ -191,11 +193,30 @@ public class UserinfoService extends BaseUserinfoService {
 			Userinfo userinfo = getByIdCard(idCard);
 			if(null == userinfo) {
 				userinfo = new Userinfo();
+				userinfo.setId(String.valueOf((new Date()).getTime()));
+				convertExcelData(forEntity,userinfo);
+				userinfo.setUpdateBy(UserUtils.getUser());
+				userinfo.setCreateBy(UserUtils.getUser());
+				userinfo.setUpdateDate(new Date());
+				userinfo.setCreateDate(new Date());
+				dao.insert(userinfo);
+			}else {
+				convertExcelData(forEntity,userinfo);
+				save(userinfo);
 			}
-			convertExcelData(forEntity,userinfo);
-			save(userinfo);
 		}
 		return null;
+	}
+	
+	/**
+	 * 是否
+	 */
+	protected boolean convertGender(String param){
+		if(param.equals("男")){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	//数据转换 Excel和数据库
@@ -206,6 +227,14 @@ public class UserinfoService extends BaseUserinfoService {
 		userinfo.setCertificate(vie.getCertificate());
 		userinfo.setIdCard(vie.getIdCard());
 		userinfo.setPhoneNumber(vie.getPhone());
+		if(!StringUtils.isEmpty(vie.getPoliticalLandscape())){
+			userinfo.setPoliticalLandscape(vie.getPoliticalLandscape());
+		}
+		
+		if(!StringUtils.isEmpty(vie.getGender())){
+			userinfo.setGender(convertGender(vie.getGender()));
+		}
+		
 		String yes = DictUtils.getDictLabel("1", "yes_no", "是");
 		
 		//劳模先进

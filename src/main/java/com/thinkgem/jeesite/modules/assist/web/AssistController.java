@@ -39,7 +39,6 @@ import com.thinkgem.jeesite.modules.assist.entity.Assist;
 import com.thinkgem.jeesite.modules.assist.service.AssistService;
 import com.thinkgem.jeesite.modules.famliyship.entity.Famliyrelationship;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
-import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
