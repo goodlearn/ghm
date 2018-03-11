@@ -55,7 +55,7 @@
 				<th>姓名</th>
 				<th>身份证号</th>
 				<th>性别</th>
-				<th>电话号</th>
+				<th>手机</th>
 				<th>社区</th>
 				<shiro:hasPermission name="userinfo:userinfo:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
