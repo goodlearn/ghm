@@ -80,8 +80,7 @@
 				<tr>
 					<td class="tit">电话号码</td>
 					<td>
-						<form:input path="phoneNumber" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
-						<span class="help-inline"><font color="red">*</font> </span>		
+						<form:input path="phoneNumber" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 					</td>
 					<td class="tit">文化程度</td>
 					<td>

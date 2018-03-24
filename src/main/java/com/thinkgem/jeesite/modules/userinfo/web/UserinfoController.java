@@ -118,7 +118,7 @@ public class UserinfoController extends BaseController {
 			return false;
 		}
 		
-		//电话号码 符合验证
+/*		//电话号码 符合验证
 		String phoneNumber = userinfo.getPhoneNumber();
 		if(null!=phoneNumber){
 			if(!CasUtils.phoneNumber(phoneNumber)) {
@@ -126,7 +126,7 @@ public class UserinfoController extends BaseController {
 				return false;
 			}
 		}
-		
+*/		
 		return true;
 	}
 
@@ -156,12 +156,8 @@ public class UserinfoController extends BaseController {
     @RequestMapping(value = "importNew", method=RequestMethod.POST)
     public String importNew(MultipartFile file, RedirectAttributes redirectAttributes) {
 		try {
-			String error = userinfoService.processExcel(userinfoService.excel(file));
-			if(null == error) {
-				addMessage(redirectAttributes, "成功导入 ");
-			}else {
-				addMessage(redirectAttributes, error);
-			}
+			String msg = userinfoService.processExcel(userinfoService.excel(file));
+			addMessage(redirectAttributes, msg);
 		}catch(Exception e) {
 			e.printStackTrace();
 			addMessage(redirectAttributes, "导入用户失败！失败信息："+e.getMessage());

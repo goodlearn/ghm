@@ -160,8 +160,9 @@ public class UserinfoService extends BaseUserinfoService {
 	@Transactional(readOnly = false)
 	public String processExcel(List<ViewUserInfoExcel> data) {
 		
-		StringBuilder failureMsg = new StringBuilder();
 		
+		StringBuilder failureMsg = new StringBuilder();
+
 		//空数据检查
 		if(null == data || data.size() == 0) {
 			failureMsg.append("数据为空");
@@ -177,7 +178,7 @@ public class UserinfoService extends BaseUserinfoService {
 				failureMsg.append("<br/>姓名: "+forEntity.getName()+"身份证为空; ");
 				isError = true;
 			}else if(!CasUtils.idCardNumber(idCard)) {
-				failureMsg.append("<br/>身份证号 "+idCard+" 格式错误; ");
+				failureMsg.append("<br/>"+forEntity.getName()+"身份证号格式错误  ");
 				isError = true;
 			}
 		}
@@ -187,8 +188,12 @@ public class UserinfoService extends BaseUserinfoService {
 			return failureMsg.toString();
 		}
 		
+		
+		int count = 0;
+		
 		//数据处理
 		for(ViewUserInfoExcel forEntity : data) {
+			count++;
 			String idCard = forEntity.getIdCard();
 			Userinfo userinfo = getByIdCard(idCard);
 			if(null == userinfo) {
@@ -205,7 +210,8 @@ public class UserinfoService extends BaseUserinfoService {
 				save(userinfo);
 			}
 		}
-		return null;
+		failureMsg.append("<br/> 共导入数据"+count+"条");
+		return failureMsg.toString();
 	}
 	
 	/**
@@ -282,9 +288,10 @@ public class UserinfoService extends BaseUserinfoService {
 			throw new RuntimeException("文档中没有工作表!");
 		}
 		logger.info("文件读入成功，文件名:"+fileName);
-		Sheet sheet = wb.getSheetAt(0);//只去第一个表格
+		Sheet sheet = wb.getSheetAt(0);//只取第一个表格
 		int dataStartNum = 4;//数据行号
 		int dataEndNum = sheet.getLastRowNum();//数据行号
+		dataEndNum++;
 		logger.info("数据行数:"+dataEndNum);
 		List<ViewUserInfoExcel> ret = new ArrayList<ViewUserInfoExcel>();
 		for (int i = dataStartNum; i < dataEndNum; i++) {
